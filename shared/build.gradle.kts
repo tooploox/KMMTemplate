@@ -69,6 +69,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.sqlDelight.android)
                 implementation(libs.ktor.client.okHttp)
+                implementation(libs.compose.navigation)
             }
         }
         val androidUnitTest by getting {

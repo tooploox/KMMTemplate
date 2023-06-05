@@ -1,12 +1,13 @@
 package co.touchlab.kampkit.android
 
+import BreedDetailsViewModel
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import co.touchlab.kampkit.AppInfo
 import co.touchlab.kampkit.initKoin
-import co.touchlab.kampkit.models.BreedViewModel
+import co.touchlab.kampkit.ui.BreedsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
@@ -18,7 +19,8 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { BreedViewModel(get(), get { parametersOf("BreedViewModel") }) }
+                viewModel { BreedsViewModel(get(), get(), get { parametersOf("BreedsViewModel") }) }
+                viewModel { params -> BreedDetailsViewModel(params.get()) }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", Context.MODE_PRIVATE)
                 }

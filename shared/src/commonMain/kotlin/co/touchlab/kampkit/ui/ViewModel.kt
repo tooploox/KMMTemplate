@@ -1,4 +1,4 @@
-package co.touchlab.kampkit.models
+package co.touchlab.kampkit.ui
 
 import kotlinx.coroutines.CoroutineScope
 

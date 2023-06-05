@@ -53,5 +53,7 @@ dependencies {
     implementation(libs.kotlinx.dateTime)
     coreLibraryDesugaring(libs.android.desugaring)
     implementation(libs.koin.android)
+    implementation(libs.koin.compose)
     testImplementation(libs.junit)
+    implementation(libs.compose.navigation)
 }

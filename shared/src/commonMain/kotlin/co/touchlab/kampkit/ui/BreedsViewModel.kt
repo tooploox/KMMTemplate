@@ -1,6 +1,8 @@
-package co.touchlab.kampkit.models
+package co.touchlab.kampkit.ui
 
 import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.models.BreedRepository
+import co.touchlab.kampkit.navigation.Router
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
@@ -11,24 +13,25 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class BreedViewModel(
+class BreedsViewModel(
     private val breedRepository: BreedRepository,
+    private val router: Router,
     log: Logger
 ) : ViewModel() {
-    private val log = log.withTag("BreedCommonViewModel")
+    private val log = log.withTag("BreedsViewModel")
 
-    private val mutableBreedState: MutableStateFlow<BreedViewState> =
-        MutableStateFlow(BreedViewState(isLoading = true))
+    private val mutableBreedState: MutableStateFlow<BreedsViewState> =
+        MutableStateFlow(BreedsViewState(isLoading = true))
 
     @NativeCoroutinesState
-    val breedState: StateFlow<BreedViewState> = mutableBreedState
+    val breedState: StateFlow<BreedsViewState> = mutableBreedState
 
     init {
         observeBreeds()
     }
 
     override fun onCleared() {
-        log.v("Clearing BreedViewModel")
+        log.v("Clearing BreedsViewModel")
     }
 
     private fun observeBreeds() {
@@ -51,7 +54,7 @@ class BreedViewModel(
                         } else {
                             previousState.error
                         }
-                        BreedViewState(
+                        BreedsViewState(
                             isLoading = false,
                             breeds = breeds.takeIf { it.isNotEmpty() },
                             error = errorMessage.takeIf { breeds.isEmpty() },
@@ -75,6 +78,10 @@ class BreedViewModel(
         }
     }
 
+    fun openDetails(breedId: Long) {
+        router.toBreedDetails(breedId)
+    }
+
     fun updateBreedFavorite(breed: Breed): Job {
         return viewModelScope.launch {
             breedRepository.updateBreedFavorite(breed)
@@ -85,7 +92,7 @@ class BreedViewModel(
         log.e(throwable) { "Error downloading breed list" }
         mutableBreedState.update {
             if (it.breeds.isNullOrEmpty()) {
-                BreedViewState(error = "Unable to refresh breed list")
+                BreedsViewState(error = "Unable to refresh breed list")
             } else {
                 // Just let it fail silently if we have a cache
                 it.copy(isLoading = false)
@@ -94,7 +101,7 @@ class BreedViewModel(
     }
 }
 
-data class BreedViewState(
+data class BreedsViewState(
     val breeds: List<Breed>? = null,
     val error: String? = null,
     val isLoading: Boolean = false,
