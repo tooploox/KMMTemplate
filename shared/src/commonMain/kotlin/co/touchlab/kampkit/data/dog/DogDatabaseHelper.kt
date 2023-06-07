@@ -1,12 +1,15 @@
 package co.touchlab.kampkit.data.dog
 
 import co.touchlab.kampkit.core.transactionWithContext
+import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.core.transactionWithContext
 import co.touchlab.kampkit.db.DbBreed
 import co.touchlab.kampkit.db.KaMPKitDb
 import co.touchlab.kermit.Logger
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -35,11 +38,11 @@ class DogDatabaseHelper(
         }
     }
 
-    fun selectById(id: Long): Flow<List<DbBreed>> =
+    fun selectById(id: Long): Flow<DbBreed?> =
         dbRef.tableQueries
             .selectById(id)
             .asFlow()
-            .mapToList(Dispatchers.Default)
+            .mapToOneOrNull(Dispatchers.Default)
             .flowOn(backgroundDispatcher)
 
     suspend fun deleteAll() {

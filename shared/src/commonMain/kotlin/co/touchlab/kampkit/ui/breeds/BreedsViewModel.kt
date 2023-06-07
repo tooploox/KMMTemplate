@@ -1,10 +1,14 @@
 package co.touchlab.kampkit.ui.breeds
 
+import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.core.ViewModel
+import co.touchlab.kampkit.data.dog.DogRepository
 import co.touchlab.kampkit.core.ViewModel
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,6 +34,16 @@ class BreedsViewModel(
         observeBreeds()
     }
 
+    override fun onCleared() {
+        log.v("Clearing BreedViewModel")
+    }
+
+    fun onNavigationCompleted() {
+        mutableBreedState.update {
+            it.copy(navigationIntent = null)
+        }
+    }
+
     private fun observeBreeds() {
         // Refresh breeds, and emit any exception that was thrown so we can handle it downstream
         val refreshFlow = flow<Throwable?> {
@@ -50,7 +64,7 @@ class BreedsViewModel(
                         } else {
                             previousState.error
                         }
-                        BreedsViewState(
+                        previousState.copy(
                             isLoading = false,
                             breeds = breeds,
                             error = errorMessage.takeIf { breeds.isEmpty() },
@@ -76,7 +90,9 @@ class BreedsViewModel(
 
     fun updateBreedFavorite(breedId: Long): Job {
         return viewModelScope.launch {
-            breedRepository.updateBreedFavorite(breedId)
+            mutableBreedState.update {
+                it.copy(navigationIntent = NavigationIntent.ToDetails(breed.id))
+            }
         }
     }
 
@@ -92,3 +108,24 @@ class BreedsViewModel(
         }
     }
 }
+
+data class BreedViewState(
+    val breeds: List<Breed> = emptyList(),
+    val error: String? = null,
+    val isLoading: Boolean = false,
+    val isEmpty: Boolean = false,
+    val navigationIntent: NavigationIntent? = null
+) {
+    companion object {
+        // This method lets you use the default constructor values in Swift. When accessing the
+        // constructor directly, they will not work there and would need to be provided explicitly.
+        fun default() = BreedViewState()
+    }
+}
+
+)
+
+sealed class NavigationIntent {
+    data class ToDetails(val breedId: Long) : NavigationIntent()
+}
+

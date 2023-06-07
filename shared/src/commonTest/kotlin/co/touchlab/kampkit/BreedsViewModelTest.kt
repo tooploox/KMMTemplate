@@ -95,7 +95,8 @@ class BreedsViewModelTest {
         settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
-        val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
+        val resultWithExtraBreed =
+            successResult.copy(message = successResult.message + ("extra" to emptyList()))
         ktorApi.prepareResult(resultWithExtraBreed)
 
         dbHelper.insertBreeds(breedNames)
@@ -119,7 +120,8 @@ class BreedsViewModelTest {
         settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
-        val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
+        val resultWithExtraBreed =
+            successResult.copy(message = successResult.message + ("extra" to emptyList()))
         ktorApi.prepareResult(resultWithExtraBreed)
 
         dbHelper.insertBreeds(breedNames)

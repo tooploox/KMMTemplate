@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import co.touchlab.kampkit.core.AppInfo
 import co.touchlab.kampkit.core.initKoin
+import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
@@ -18,7 +19,14 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { BreedsViewModel(get(), get { parametersOf("BreedsViewModel") }) }
+                viewModel {
+                    BreedsViewModel(get(), get { parametersOf("BreedsViewModel") })
+                }
+                viewModel {params ->
+                    BreedDetailsViewModel(
+                        params.get(), get(), get { parametersOf("BreedDetailsViewModel") }
+                    )
+                }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", MODE_PRIVATE)
                 }

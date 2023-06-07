@@ -5,6 +5,10 @@ import co.touchlab.kampkit.data.dog.DogApiImpl
 import co.touchlab.kampkit.data.dog.DogDatabaseHelper
 import co.touchlab.kampkit.data.dog.NetworkBreedRepository
 import co.touchlab.kampkit.domain.breed.BreedRepository
+import co.touchlab.kampkit.data.dog.DogApi
+import co.touchlab.kampkit.data.dog.DogApiImpl
+import co.touchlab.kampkit.data.dog.DogDatabaseHelper
+import co.touchlab.kampkit.data.dog.DogRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
