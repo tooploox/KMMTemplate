@@ -13,9 +13,9 @@ import KMPNativeCoroutinesCombine
 
 class BreedsViewModel: ObservableObject {
 
-    @Published var state: BreedViewState = BreedViewState.companion.default()
+    @Published var state: BreedsViewState = BreedsViewState.companion.default()
 
-    private var viewModelDelegate: BreedViewModelDelegate = KotlinDependencies.shared.getBreedViewModel()
+    private var viewModelDelegate: BreedsViewModelDelegate = KotlinDependencies.shared.getBreedsViewModel()
     private var cancellables = [AnyCancellable]()
 
     deinit {
@@ -24,7 +24,7 @@ class BreedsViewModel: ObservableObject {
 
     func subscribeState() {
         createPublisher(for: viewModelDelegate.breedsStateFlow)
-            .sink { _ in } receiveValue: { [weak self] (breedState: BreedViewState) in
+            .sink { _ in } receiveValue: { [weak self] (breedState: BreedsViewState) in
                 self?.state = breedState
             }
             .store(in: &cancellables)

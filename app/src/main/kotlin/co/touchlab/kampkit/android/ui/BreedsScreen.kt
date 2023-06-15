@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kampkit.android.R
 import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.ui.breeds.BreedViewState
+import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
 import co.touchlab.kermit.Logger
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -54,7 +54,7 @@ fun BreedsScreen(
 
 @Composable
 fun BreedsScreenContent(
-    dogsState: BreedViewState,
+    dogsState: BreedsViewState,
     onRefresh: () -> Unit = {},
     onSuccess: (List<Breed>) -> Unit = {},
     onError: (String) -> Unit = {},
@@ -175,7 +175,7 @@ fun FavoriteIcon(breed: Breed) {
 @Composable
 fun BreedsScreenContentPreview_Success() {
     BreedsScreenContent(
-        dogsState = BreedViewState(
+        dogsState = BreedsViewState(
             breeds = listOf(
                 Breed(0, "appenzeller", false),
                 Breed(1, "australian", true)

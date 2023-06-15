@@ -14,25 +14,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
 
-@ObjCName("BreedViewModelDelegate")
+@ObjCName("BreedsViewModelDelegate")
 class BreedsViewModel(
     private val dogRepository: DogRepository,
     log: Logger
 ) : ViewModel() {
-    private val log = log.withTag("BreedViewModel")
+    private val log = log.withTag("BreedsViewModel")
 
-    private val mutableBreedState: MutableStateFlow<BreedViewState> =
-        MutableStateFlow(BreedViewState(isLoading = true))
+    private val mutableBreedState: MutableStateFlow<BreedsViewState> =
+        MutableStateFlow(BreedsViewState(isLoading = true))
 
     @NativeCoroutinesState
-    val breedsState: StateFlow<BreedViewState> = mutableBreedState
+    val breedsState: StateFlow<BreedsViewState> = mutableBreedState
 
     init {
         observeBreeds()
-    }
-
-    override fun onCleared() {
-        log.v("Clearing BreedViewModel")
     }
 
     private fun observeBreeds() {
@@ -55,7 +51,7 @@ class BreedsViewModel(
                         } else {
                             previousState.error
                         }
-                        BreedViewState(
+                        BreedsViewState(
                             isLoading = false,
                             breeds = breeds,
                             error = errorMessage.takeIf { breeds.isEmpty() },
@@ -89,24 +85,11 @@ class BreedsViewModel(
         log.e(throwable) { "Error downloading breed list" }
         mutableBreedState.update {
             if (it.breeds.isEmpty()) {
-                BreedViewState(error = "Unable to refresh breed list")
+                BreedsViewState(error = "Unable to refresh breed list")
             } else {
                 // Just let it fail silently if we have a cache
                 it.copy(isLoading = false)
             }
         }
-    }
-}
-
-data class BreedViewState(
-    val breeds: List<Breed> = emptyList(),
-    val error: String? = null,
-    val isLoading: Boolean = false,
-    val isEmpty: Boolean = false
-) {
-    companion object {
-        // This method lets you use the default constructor values in Swift. When accessing the
-        // constructor directly, they will not work there and would need to be provided explicitly.
-        fun default() = BreedViewState()
     }
 }

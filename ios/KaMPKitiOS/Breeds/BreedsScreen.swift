@@ -29,7 +29,7 @@ struct BreedsScreen: View {
 }
 
 struct BreedsContent: View {
-    var state: BreedViewState
+    var state: BreedsViewState
     var onBreedFavorite: (Breed) -> Void
     var refresh: () -> Void
 
@@ -74,7 +74,7 @@ struct BreedRowView: View {
 struct BreedsScreen_Previews: PreviewProvider {
     static var previews: some View {
         BreedsContent(
-            state: BreedViewState(
+            state: BreedsViewState(
                 breeds: [
                     Breed(id: 0, name: "appenzeller", favorite: false),
                     Breed(id: 1, name: "australian", favorite: true)

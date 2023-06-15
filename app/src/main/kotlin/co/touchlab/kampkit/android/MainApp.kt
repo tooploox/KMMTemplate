@@ -18,7 +18,7 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { BreedsViewModel(get(), get { parametersOf("BreedViewModel") }) }
+                viewModel { BreedsViewModel(get(), get { parametersOf("BreedsViewModel") }) }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", MODE_PRIVATE)
                 }
