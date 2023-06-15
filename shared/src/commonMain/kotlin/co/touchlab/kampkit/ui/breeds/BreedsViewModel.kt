@@ -1,8 +1,8 @@
 package co.touchlab.kampkit.ui.breeds
 
+import co.touchlab.kampkit.core.ViewModel
 import co.touchlab.kampkit.data.dog.DogRepository
 import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.core.ViewModel
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
