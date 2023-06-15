@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kampkit.android.R
 import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
+import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kermit.Logger
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

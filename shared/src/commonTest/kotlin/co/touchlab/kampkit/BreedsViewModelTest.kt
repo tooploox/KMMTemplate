@@ -8,8 +8,8 @@ import co.touchlab.kampkit.data.dog.DogResult
 import co.touchlab.kampkit.db.Breed
 import co.touchlab.kampkit.mock.ClockMock
 import co.touchlab.kampkit.mock.DogApiMock
-import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
+import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import com.russhwolf.settings.MapSettings
