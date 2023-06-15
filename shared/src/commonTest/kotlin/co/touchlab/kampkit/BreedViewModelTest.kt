@@ -50,7 +50,7 @@ class BreedViewModelTest {
         private val breedViewStateSuccessFavorite = BreedViewState(
             breeds = listOf(appenzeller, australianLike)
         )
-        private val breedNames = breedViewStateSuccessNoFavorite.breeds?.map { it.name }.orEmpty()
+        private val breedNames = breedViewStateSuccessNoFavorite.breeds.map { it.name }
     }
 
     @BeforeTest
@@ -106,7 +106,7 @@ class BreedViewModelTest {
             viewModel.refreshBreeds().join()
             // id is 5 here because it incremented twice when trying to insert duplicate breeds
             assertEquals(
-                BreedViewState(breedViewStateSuccessFavorite.breeds?.plus(Breed(5, "extra", false))),
+                BreedViewState(breedViewStateSuccessFavorite.breeds.plus(Breed(5, "extra", false))),
                 awaitItemPrecededBy(breedViewStateSuccessFavorite.copy(isLoading = true))
             )
         }
@@ -126,7 +126,7 @@ class BreedViewModelTest {
         viewModel.breedState.test {
             // id is 5 here because it incremented twice when trying to insert duplicate breeds
             assertEquals(
-                BreedViewState(breedViewStateSuccessFavorite.breeds?.plus(Breed(5, "extra", false))),
+                BreedViewState(breedViewStateSuccessFavorite.breeds.plus(Breed(5, "extra", false))),
                 awaitItemPrecededBy(BreedViewState(isLoading = true), breedViewStateSuccessFavorite)
             )
         }
