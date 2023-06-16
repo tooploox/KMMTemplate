@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("BreedDetailsViewModelDelegate")
 class BreedDetailsViewModel(
     private val breedId: Long,
     private val dogRepository: DogRepository,

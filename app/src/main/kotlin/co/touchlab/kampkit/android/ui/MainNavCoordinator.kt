@@ -1,6 +1,7 @@
 package co.touchlab.kampkit.android.ui
 
 import androidx.compose.runtime.Composable
+ import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,28 +11,37 @@ import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+private const val BREEDS = "breeds"
+
+private const val BREED_DETAILS = "breedDetails"
+private const val BREED_ID_ARG = "breedId"
+
 @Composable
-fun MainNavigation() {
+fun MainNavCoordinator() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "breeds") {
-        composable("breeds") {
+        composable(BREEDS) {
             BreedsScreen(
                 viewModel = koinViewModel(),
-                onNavigateToDetails = { breedId ->
-                    navController.navigate("breedDetails/$breedId")
+                onBreedDetailsNavRequest = { breedId ->
+                    navController.navigateToBreedDetails(breedId)
                 },
                 log = get { parametersOf("BreedsScreen") }
             )
         }
         composable(
-            route = "breedDetails/{breedId}",
-            arguments = listOf(navArgument("breedId") { type = NavType.LongType })
+            route = "$BREED_DETAILS/{$BREED_ID_ARG}",
+            arguments = listOf(navArgument(BREED_ID_ARG) { type = NavType.LongType })
         ) {
-            val breedId = it.arguments?.getLong("breedId")
+            val breedId = it.arguments?.getLong(BREED_ID_ARG)
             BreedDetailsScreen(
                 viewModel = koinViewModel { parametersOf(breedId) },
                 log = get { parametersOf("BreedDetailsScreen") }
             )
         }
     }
+}
+
+private fun NavController.navigateToBreedDetails(breedId: Long) {
+    navigate("$BREED_DETAILS/$breedId")
 }

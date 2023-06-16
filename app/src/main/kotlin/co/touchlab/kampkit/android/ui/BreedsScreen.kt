@@ -35,7 +35,7 @@ import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kampkit.db.Breed
 import co.touchlab.kampkit.ui.breeds.BreedViewState
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
-import co.touchlab.kampkit.ui.breeds.NavigationIntent
+import co.touchlab.kampkit.ui.breeds.BreedsNavRequest
 import co.touchlab.kermit.Logger
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -43,16 +43,16 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun BreedsScreen(
     viewModel: BreedsViewModel,
-    onNavigateToDetails: (breedId: Long) -> Unit,
+    onBreedDetailsNavRequest: (breedId: Long) -> Unit,
     log: Logger
 ) {
     val breedsState by viewModel.breedsState.collectAsStateWithLifecycle()
 
-    dogsState.navigationIntent?.let { navIntent ->
-        LaunchedEffect(navIntent) {
-            if (navIntent is NavigationIntent.ToDetails) {
-                onNavigateToDetails(navIntent.breedId)
-                viewModel.onNavigationCompleted()
+    dogsState.breedsNavRequest?.let { navRequest ->
+        LaunchedEffect(navRequest) {
+            if (navRequest is BreedsNavRequest.ToDetails) {
+                onBreedDetailsNavRequest(navRequest.breedId)
+                viewModel.onBreedDetailsNavRequestCompleted()
             }
         }
     }

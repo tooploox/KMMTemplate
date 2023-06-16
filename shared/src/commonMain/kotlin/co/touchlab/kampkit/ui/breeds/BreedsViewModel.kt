@@ -8,7 +8,6 @@ import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -38,9 +37,9 @@ class BreedsViewModel(
         log.v("Clearing BreedViewModel")
     }
 
-    fun onNavigationCompleted() {
+    fun onBreedDetailsNavRequestCompleted() {
         mutableBreedState.update {
-            it.copy(navigationIntent = null)
+            it.copy(breedsNavRequest = null)
         }
     }
 
@@ -91,8 +90,9 @@ class BreedsViewModel(
     fun updateBreedFavorite(breedId: Long): Job {
         return viewModelScope.launch {
             mutableBreedState.update {
-                it.copy(navigationIntent = NavigationIntent.ToDetails(breed.id))
+                it.copy(breedsNavRequest = BreedsNavRequest.ToDetails(breed.id))
             }
+            dogRepository.updateBreedFavorite(breed)
         }
     }
 
@@ -114,7 +114,7 @@ data class BreedViewState(
     val error: String? = null,
     val isLoading: Boolean = false,
     val isEmpty: Boolean = false,
-    val navigationIntent: NavigationIntent? = null
+    val breedsNavRequest: BreedsNavRequest? = null
 ) {
     companion object {
         // This method lets you use the default constructor values in Swift. When accessing the
@@ -122,10 +122,3 @@ data class BreedViewState(
         fun default() = BreedViewState()
     }
 }
-
-)
-
-sealed class NavigationIntent {
-    data class ToDetails(val breedId: Long) : NavigationIntent()
-}
-

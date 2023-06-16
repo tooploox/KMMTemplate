@@ -13,11 +13,11 @@ import KMPNativeCoroutinesCombine
 
 private let log = koin.loggerWithTag(tag: "ViewController")
 
-class ObservableBreedModel: ObservableObject {
-    private var navigationController: AppNavigationController
-    private var viewModel: BreedsViewModel = KotlinDependencies.shared.getBreedsViewModel()
-    init(navigationController: AppNavigationController) {
-        self.navigationController = navigationController
+class BreedsViewModel: ObservableObject {
+    private var navCoordinator: BreedsNavCoordinator
+    private var viewModel: BreedsViewModelDelegate = KotlinDependencies.shared.getBreedsViewModel()
+    init(navCoordinator: BreedsNavCoordinator) {
+        self.navCoordinator = navCoordinator
     }
 
     @Published
@@ -42,11 +42,8 @@ class ObservableBreedModel: ObservableObject {
                 self?.breeds = breedState.breeds
                 self?.error = breedState.error
 
-                if let navIntent = breedState.navigationIntent as? NavigationIntent.ToDetails {
-                    self?.navigationController.toBreedDetails(breedId: navIntent.breedId)
-                    self?.viewModel.onNavigationCompleted()
-                }
-
+                self?.handleNavRequests(breedsState: breedState)
+     
                 if let breeds = breedState.breeds {
                     log.d(message: {"View updating with \(breeds.count) breeds"})
                 }
@@ -55,6 +52,13 @@ class ObservableBreedModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func handleNavRequests(breedsState: BreedViewState) {
+        if let navRequest = breedsState.breedsNavRequest as? BreedsNavRequest.ToDetails {
+            self.navCoordinator.onBreedDetailsRequest(breedId: navRequest.breedId)
+            self.viewModel.onBreedDetailsNavRequestCompleted()
+        }
     }
 
     func deactivate() {
@@ -73,21 +77,21 @@ class ObservableBreedModel: ObservableObject {
 
 struct BreedListScreen: View {
     @StateObject
-    var observableModel: ObservableBreedModel
+    var viewModel: BreedsViewModel
 
     var body: some View {
         BreedListContent(
-            loading: observableModel.loading,
-            breeds: observableModel.breeds,
-            error: observableModel.error,
-            onBreedFavorite: { observableModel.onBreedFavorite($0) },
-            refresh: { observableModel.refresh() }
+            loading: viewModel.loading,
+            breeds: viewModel.breeds,
+            error: viewModel.error,
+            onBreedFavorite: { viewModel.onBreedFavorite($0) },
+            refresh: { viewModel.refresh() }
         )
         .onAppear(perform: {
-            observableModel.activate()
+            viewModel.activate()
         })
         .onDisappear(perform: {
-            observableModel.deactivate()
+            viewModel.deactivate()
         })
     }
 }

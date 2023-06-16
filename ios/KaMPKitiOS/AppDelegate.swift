@@ -22,8 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         startKoin()
 
-        let navController = AppNavigationController()
-        navController.toBreeds()
+        let navController = UINavigationController()
+        let mainCoordinator = MainNavCoordinator(navController: navController)
+        mainCoordinator.start()
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = navController

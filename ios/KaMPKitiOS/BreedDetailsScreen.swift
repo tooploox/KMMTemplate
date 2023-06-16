@@ -12,22 +12,22 @@ import shared
 import KMPNativeCoroutinesCombine
 import Foundation
 
-class ObservableBreedDetailsModel: ObservableObject {
-    private var viewModel: BreedDetailsViewModel
+class BreedDetailsViewModel: ObservableObject {
+    private var viewModel: BreedDetailsViewModelDelegate
 
     init(breedId: Int64) {
         self.viewModel = KotlinDependencies.shared.getBreedDetailsViewModel(breedId: breedId)
     }
 
     @Published
-    var breed: Breed?
+    var detailsState: BreedDetailsViewState = BreedDetailsViewState.companion.default()
 
     private var cancellables = [AnyCancellable]()
 
     func activate() {
         createPublisher(for: viewModel.detailsStateFlow)
             .sink { _ in } receiveValue: { [weak self] (detailsState: BreedDetailsViewState) in
-                if let breed = detailsState.breed { self?.breed = breed }
+                self?.detailsState = detailsState
             }
             .store(in: &cancellables)
     }
@@ -44,17 +44,17 @@ class ObservableBreedDetailsModel: ObservableObject {
 
 struct BreedDetailsScreen: View {
     @StateObject
-    var observableModel: ObservableBreedDetailsModel
+    var viewModel: BreedDetailsViewModel
 
     var body: some View {
         BreedDetailsContent(
-            breedName: observableModel.breed?.name ?? ""
+            breedName: viewModel.detailsState.breed.name
         )
         .onAppear(perform: {
-            observableModel.activate()
+            viewModel.activate()
         })
         .onDisappear(perform: {
-            observableModel.deactivate()
+            viewModel.deactivate()
         })
     }
 }
