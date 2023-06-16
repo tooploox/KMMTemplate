@@ -2,13 +2,10 @@ package co.touchlab.kampkit.ui.breedDetails
 
 import co.touchlab.kampkit.core.ViewModel
 import co.touchlab.kampkit.data.dog.DogRepository
-import co.touchlab.kampkit.db.Breed
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -26,42 +23,23 @@ class BreedDetailsViewModel(
     val detailsState: StateFlow<BreedDetailsViewState> = mutableDetailsState
 
     init {
-        observeDetails()
+        loadDetails()
     }
 
-    private fun observeDetails() {
-        // Refresh breeds, and emit any exception that was thrown so we can handle it downstream
-        val refreshFlow = flow<Throwable?> {
-            try {
-                dogRepository.refreshBreedsIfStale()
-                emit(null)
-            } catch (exception: Exception) {
-                emit(exception)
-            }
-        }
-
+    private fun loadDetails() {
         viewModelScope.launch {
-            combine(refreshFlow, dogRepository.getBreed(breedId)) { throwable, breed -> throwable to breed }
-                .collect { (error, breed) ->
-                    mutableDetailsState.update { previousState ->
-                        val errorMessage = if (error != null) {
-                            "Unable to download breed details"
-                        } else {
-                            previousState.error
-                        }
-                        previousState.copy(
-                            isLoading = false,
-                            breed = breed,
-                            error = errorMessage.takeIf { breed != null },
-                        )
-                    }
+            dogRepository.getBreed(breedId).collect { breed ->
+                mutableDetailsState.update { previousState ->
+                    val error = if (breed == null) "Couldn't load the breed details" else null
+                    val newBreed = breed?.toDisplayable() ?: previousState.breed
+                    previousState.copy(
+                        isLoading = false,
+                        breed = newBreed,
+                        error = error
+                    )
                 }
+            }
         }
     }
 }
 
-data class BreedDetailsViewState(
-    val breed: Breed? = null,
-    val error: String? = null,
-    val isLoading: Boolean = false,
-)
