@@ -27,9 +27,9 @@ class MainNavCoordinator: BreedsNavCoordinator {
     }
 }
 
-private func buildBreedsController(navCoordinator: BreedsNavCoordinator) -> UIHostingController<BreedListScreen> {
+private func buildBreedsController(navCoordinator: BreedsNavCoordinator) -> UIHostingController<BreedsScreen> {
     let viewModel = BreedsViewModel(navCoordinator: navCoordinator)
-    return UIHostingController(rootView: BreedListScreen(viewModel: viewModel))
+    return UIHostingController(rootView: BreedsScreen(viewModel: viewModel))
 }
 
 private func buildBreedDetailsController(breedId: Int64) -> UIHostingController<BreedDetailsScreen> {
