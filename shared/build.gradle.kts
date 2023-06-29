@@ -6,13 +6,14 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("com.squareup.sqldelight")
+    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-9"
 }
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     testOptions {
@@ -42,6 +43,7 @@ kotlin {
                 optIn("kotlin.RequiresOptIn")
                 optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
                 optIn("kotlin.time.ExperimentalTime")
+                optIn("kotlin.experimental.ExperimentalObjCName")
             }
         }
 
