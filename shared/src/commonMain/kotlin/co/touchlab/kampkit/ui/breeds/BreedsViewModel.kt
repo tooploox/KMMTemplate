@@ -1,8 +1,7 @@
 package co.touchlab.kampkit.ui.breeds
 
 import co.touchlab.kampkit.core.ViewModel
-import co.touchlab.kampkit.data.dog.DogRepository
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
@@ -16,7 +15,7 @@ import kotlin.native.ObjCName
 
 @ObjCName("BreedsViewModelDelegate")
 class BreedsViewModel(
-    private val dogRepository: DogRepository,
+    private val breedRepository: BreedRepository,
     log: Logger
 ) : ViewModel() {
     private val log = log.withTag("BreedsViewModel")
@@ -35,7 +34,7 @@ class BreedsViewModel(
         // Refresh breeds, and emit any exception that was thrown so we can handle it downstream
         val refreshFlow = flow<Throwable?> {
             try {
-                dogRepository.refreshBreedsIfStale()
+                breedRepository.refreshBreedsIfStale()
                 emit(null)
             } catch (exception: Exception) {
                 emit(exception)
@@ -43,7 +42,7 @@ class BreedsViewModel(
         }
 
         viewModelScope.launch {
-            combine(refreshFlow, dogRepository.getBreeds()) { throwable, breeds -> throwable to breeds }
+            combine(refreshFlow, breedRepository.getBreeds()) { throwable, breeds -> throwable to breeds }
                 .collect { (error, breeds) ->
                     mutableBreedState.update { previousState ->
                         val errorMessage = if (error != null) {
@@ -68,16 +67,16 @@ class BreedsViewModel(
         return viewModelScope.launch {
             log.v { "refreshBreeds" }
             try {
-                dogRepository.refreshBreeds()
+                breedRepository.refreshBreeds()
             } catch (exception: Exception) {
                 handleBreedError(exception)
             }
         }
     }
 
-    fun updateBreedFavorite(breed: Breed): Job {
+    fun updateBreedFavorite(breedId: Long): Job {
         return viewModelScope.launch {
-            dogRepository.updateBreedFavorite(breed)
+            breedRepository.updateBreedFavorite(breedId)
         }
     }
 

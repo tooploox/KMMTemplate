@@ -16,7 +16,7 @@ struct BreedsScreen: View {
     var body: some View {
         BreedsContent(
             state: viewModel.state,
-            onBreedFavorite: { viewModel.onBreedFavorite($0) },
+            onBreedFavorite: { viewModel.onBreedFavorite(breed: $0) },
             refresh: { viewModel.refresh() }
         )
         .onAppear(perform: {

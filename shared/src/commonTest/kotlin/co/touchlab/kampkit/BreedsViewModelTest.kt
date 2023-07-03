@@ -3,9 +3,10 @@ package co.touchlab.kampkit
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import co.touchlab.kampkit.data.dog.DogDatabaseHelper
-import co.touchlab.kampkit.data.dog.DogRepository
 import co.touchlab.kampkit.data.dog.DogResult
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.data.dog.NetworkBreedRepository
+import co.touchlab.kampkit.domain.breed.Breed
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kampkit.mock.ClockMock
 import co.touchlab.kampkit.mock.DogApiMock
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
@@ -38,7 +39,7 @@ class BreedsViewModelTest {
     // Need to start at non-zero time because the default value for db timestamp is 0
     private val clock = ClockMock(Clock.System.now())
 
-    private val repository: DogRepository = DogRepository(dbHelper, settings, ktorApi, kermit, clock)
+    private val repository: BreedRepository = NetworkBreedRepository(dbHelper, settings, ktorApi, kermit, clock)
     private val viewModel by lazy { BreedsViewModel(repository, kermit) }
 
     companion object {
@@ -91,7 +92,7 @@ class BreedsViewModelTest {
 
     @Test
     fun `Get updated breeds with cache and preserve favorites`() = runTest {
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
         val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
@@ -115,7 +116,7 @@ class BreedsViewModelTest {
 
     @Test
     fun `Get updated breeds when stale and preserve favorites`() = runTest {
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
         val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
@@ -135,7 +136,7 @@ class BreedsViewModelTest {
 
     @Test
     fun `Toggle favorite cached breed`() = runTest {
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
 
         dbHelper.insertBreeds(breedNames)
         dbHelper.updateFavorite(australianLike.id, true)
@@ -144,7 +145,7 @@ class BreedsViewModelTest {
             assertEquals(breedsViewStateSuccessFavorite, awaitItemPrecededBy(BreedsViewState(isLoading = true)))
             expectNoEvents()
 
-            viewModel.updateBreedFavorite(australianLike).join()
+            viewModel.updateBreedFavorite(australianLike.id).join()
             assertEquals(
                 breedsViewStateSuccessNoFavorite,
                 awaitItemPrecededBy(breedsViewStateSuccessFavorite.copy(isLoading = true))
@@ -154,7 +155,7 @@ class BreedsViewModelTest {
 
     @Test
     fun `No web call if data is not stale`() = runTest {
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
         ktorApi.prepareResult(ktorApi.successResult())
         dbHelper.insertBreeds(breedNames)
 
@@ -187,7 +188,7 @@ class BreedsViewModelTest {
     @Test
     fun `Ignore API error with cache`() = runTest {
         dbHelper.insertBreeds(breedNames)
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
         ktorApi.throwOnCall(RuntimeException("Test error"))
 
         viewModel.breedsState.test {
@@ -230,7 +231,7 @@ class BreedsViewModelTest {
 
     @Test
     fun `Show API error on refresh without cache`() = runTest {
-        settings.putLong(DogRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
+        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
         ktorApi.throwOnCall(RuntimeException("Test error"))
 
         viewModel.breedsState.test {

@@ -1,6 +1,6 @@
 package co.touchlab.kampkit.ui.breeds
 
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.domain.breed.Breed
 
 data class BreedsViewState(
     val breeds: List<Breed> = emptyList(),

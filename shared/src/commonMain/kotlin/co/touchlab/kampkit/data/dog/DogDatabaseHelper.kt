@@ -1,7 +1,7 @@
 package co.touchlab.kampkit.data.dog
 
 import co.touchlab.kampkit.core.transactionWithContext
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.db.DbBreed
 import co.touchlab.kampkit.db.KaMPKitDb
 import co.touchlab.kermit.Logger
 import com.squareup.sqldelight.db.SqlDriver
@@ -19,7 +19,7 @@ class DogDatabaseHelper(
 ) {
     private val dbRef: KaMPKitDb = KaMPKitDb(sqlDriver)
 
-    fun selectAllItems(): Flow<List<Breed>> =
+    fun selectAllItems(): Flow<List<DbBreed>> =
         dbRef.tableQueries
             .selectAll()
             .asFlow()
@@ -35,7 +35,7 @@ class DogDatabaseHelper(
         }
     }
 
-    fun selectById(id: Long): Flow<List<Breed>> =
+    fun selectById(id: Long): Flow<List<DbBreed>> =
         dbRef.tableQueries
             .selectById(id)
             .asFlow()

@@ -1,19 +1,22 @@
 package co.touchlab.kampkit.data.dog
 
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.domain.breed.Breed
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.stately.ensureNeverFrozen
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 
-class DogRepository(
+class NetworkBreedRepository(
     private val dbHelper: DogDatabaseHelper,
     private val settings: Settings,
     private val dogApi: DogApi,
     log: Logger,
     private val clock: Clock
-) {
+) : BreedRepository {
 
     private val log = log.withTag("DogRepository")
 
@@ -25,15 +28,19 @@ class DogRepository(
         ensureNeverFrozen()
     }
 
-    fun getBreeds(): Flow<List<Breed>> = dbHelper.selectAllItems()
+    override fun getBreeds(): Flow<List<Breed>> {
+        return dbHelper.selectAllItems().map { list ->
+            list.map { dbBreed -> dbBreed.toDomain() }
+        }
+    }
 
-    suspend fun refreshBreedsIfStale() {
+    override suspend fun refreshBreedsIfStale() {
         if (isBreedListStale()) {
             refreshBreeds()
         }
     }
 
-    suspend fun refreshBreeds() {
+    override suspend fun refreshBreeds() {
         val breedResult = dogApi.getJsonFromApi()
         log.v { "Breed network result: ${breedResult.status}" }
         val breedList = breedResult.message.keys.sorted().toList()
@@ -45,8 +52,11 @@ class DogRepository(
         }
     }
 
-    suspend fun updateBreedFavorite(breed: Breed) {
-        dbHelper.updateFavorite(breed.id, !breed.favorite)
+    override suspend fun updateBreedFavorite(breedId: Long) {
+        val foundBreedsWithId = dbHelper.selectById(breedId).first()
+        foundBreedsWithId.firstOrNull()?.let { breed ->
+            dbHelper.updateFavorite(breed.id, !breed.favorite)
+        }
     }
 
     private fun isBreedListStale(): Boolean {
@@ -58,4 +68,6 @@ class DogRepository(
         }
         return stale
     }
+
+    private fun co.touchlab.kampkit.db.DbBreed.toDomain() = Breed(id, name, favorite)
 }
