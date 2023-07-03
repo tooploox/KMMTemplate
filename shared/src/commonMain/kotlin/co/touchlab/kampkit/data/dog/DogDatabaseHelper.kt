@@ -1,8 +1,8 @@
-package co.touchlab.kampkit
+package co.touchlab.kampkit.data.dog
 
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.core.transactionWithContext
+import co.touchlab.kampkit.db.DbBreed
 import co.touchlab.kampkit.db.KaMPKitDb
-import co.touchlab.kampkit.sqldelight.transactionWithContext
 import co.touchlab.kermit.Logger
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -12,14 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 
-class DatabaseHelper(
+class DogDatabaseHelper(
     sqlDriver: SqlDriver,
     private val log: Logger,
     private val backgroundDispatcher: CoroutineDispatcher
 ) {
     private val dbRef: KaMPKitDb = KaMPKitDb(sqlDriver)
 
-    fun selectAllItems(): Flow<List<Breed>> =
+    fun selectAllItems(): Flow<List<DbBreed>> =
         dbRef.tableQueries
             .selectAll()
             .asFlow()
@@ -35,7 +35,7 @@ class DatabaseHelper(
         }
     }
 
-    fun selectById(id: Long): Flow<List<Breed>> =
+    fun selectById(id: Long): Flow<List<DbBreed>> =
         dbRef.tableQueries
             .selectById(id)
             .asFlow()

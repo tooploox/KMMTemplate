@@ -29,32 +29,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kampkit.android.R
-import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.models.BreedViewModel
-import co.touchlab.kampkit.models.BreedViewState
+import co.touchlab.kampkit.domain.breed.Breed
+import co.touchlab.kampkit.ui.breeds.BreedsViewModel
+import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kermit.Logger
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun MainScreen(
-    viewModel: BreedViewModel,
+fun BreedsScreen(
+    viewModel: BreedsViewModel,
     log: Logger
 ) {
-    val dogsState by viewModel.breedState.collectAsStateWithLifecycle()
+    val breedsState by viewModel.breedsState.collectAsStateWithLifecycle()
 
-    MainScreenContent(
-        dogsState = dogsState,
+    BreedsScreenContent(
+        dogsState = breedsState,
         onRefresh = { viewModel.refreshBreeds() },
         onSuccess = { data -> log.v { "View updating with ${data.size} breeds" } },
         onError = { exception -> log.e { "Displaying error: $exception" } },
-        onFavorite = { viewModel.updateBreedFavorite(it) }
+        onFavorite = { viewModel.updateBreedFavorite(it.id) }
     )
 }
 
 @Composable
-fun MainScreenContent(
-    dogsState: BreedViewState,
+fun BreedsScreenContent(
+    dogsState: BreedsViewState,
     onRefresh: () -> Unit = {},
     onSuccess: (List<Breed>) -> Unit = {},
     onError: (String) -> Unit = {},
@@ -68,18 +68,19 @@ fun MainScreenContent(
             state = rememberSwipeRefreshState(isRefreshing = dogsState.isLoading),
             onRefresh = onRefresh
         ) {
-            if (dogsState.isEmpty) {
-                Empty()
-            }
-            val breeds = dogsState.breeds
-            if (breeds != null) {
-                LaunchedEffect(breeds) {
-                    onSuccess(breeds)
+            if (dogsState.error == null) {
+                if (dogsState.isEmpty) {
+                    Empty()
+                } else {
+                    val breeds = dogsState.breeds
+                    LaunchedEffect(breeds) {
+                        onSuccess(breeds)
+                    }
+                    Success(successData = breeds, favoriteBreed = onFavorite)
                 }
-                Success(successData = breeds, favoriteBreed = onFavorite)
             }
-            val error = dogsState.error
-            if (error != null) {
+
+            dogsState.error?.let { error ->
                 LaunchedEffect(error) {
                     onError(error)
                 }
@@ -172,9 +173,9 @@ fun FavoriteIcon(breed: Breed) {
 
 @Preview
 @Composable
-fun MainScreenContentPreview_Success() {
-    MainScreenContent(
-        dogsState = BreedViewState(
+fun BreedsScreenContentPreview_Success() {
+    BreedsScreenContent(
+        dogsState = BreedsViewState(
             breeds = listOf(
                 Breed(0, "appenzeller", false),
                 Breed(1, "australian", true)

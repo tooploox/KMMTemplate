@@ -29,8 +29,8 @@ struct BreedsScreen: View {
 }
 
 struct BreedsContent: View {
-    var state: BreedViewState
-    var onBreedFavorite: (Breed) -> Void
+    var state: BreedsViewState
+    var onBreedFavorite: (Int64) -> Void
     var refresh: () -> Void
 
     var body: some View {
@@ -38,7 +38,7 @@ struct BreedsContent: View {
             VStack {
                 List(state.breeds, id: \.id) { breed in
                     BreedRowView(breed: breed) {
-                        onBreedFavorite(breed)
+                        onBreedFavorite(breed.id)
                     }
                 }
                 if let error = state.error {
@@ -74,7 +74,7 @@ struct BreedRowView: View {
 struct BreedsScreen_Previews: PreviewProvider {
     static var previews: some View {
         BreedsContent(
-            state: BreedViewState(
+            state: BreedsViewState(
                 breeds: [
                     Breed(id: 0, name: "appenzeller", favorite: false),
                     Breed(id: 1, name: "australian", favorite: true)

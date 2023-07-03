@@ -12,19 +12,19 @@ import shared
 import KMPNativeCoroutinesCombine
 
 class BreedsViewModel: ObservableObject {
-    
-    @Published var state: BreedViewState = BreedViewState.companion.default()
-    
-    private var viewModelDelegate: BreedViewModelDelegate = KotlinDependencies.shared.getBreedViewModel()
+
+    @Published var state: BreedsViewState = BreedsViewState.companion.default()
+
+    private var viewModelDelegate: BreedsViewModelDelegate = KotlinDependencies.shared.getBreedsViewModel()
     private var cancellables = [AnyCancellable]()
-    
+
     deinit {
         viewModelDelegate.clear()
     }
 
     func subscribeState() {
-        createPublisher(for: viewModelDelegate.breedStateFlow)
-            .sink { _ in } receiveValue: { [weak self] (breedState: BreedViewState) in
+        createPublisher(for: viewModelDelegate.breedsStateFlow)
+            .sink { _ in } receiveValue: { [weak self] (breedState: BreedsViewState) in
                 self?.state = breedState
             }
             .store(in: &cancellables)
@@ -35,8 +35,8 @@ class BreedsViewModel: ObservableObject {
         cancellables.removeAll()
     }
 
-    func onBreedFavorite(_ breed: Breed) {
-        viewModelDelegate.updateBreedFavorite(breed: breed)
+    func onBreedFavorite(_ breedId: Int64) {
+        viewModelDelegate.updateBreedFavorite(breedId: breedId)
     }
 
     func refresh() {

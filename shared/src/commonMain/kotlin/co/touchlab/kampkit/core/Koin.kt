@@ -1,8 +1,10 @@
-package co.touchlab.kampkit
+package co.touchlab.kampkit.core
 
-import co.touchlab.kampkit.ktor.DogApi
-import co.touchlab.kampkit.ktor.DogApiImpl
-import co.touchlab.kampkit.models.BreedRepository
+import co.touchlab.kampkit.data.dog.DogApi
+import co.touchlab.kampkit.data.dog.DogApiImpl
+import co.touchlab.kampkit.data.dog.DogDatabaseHelper
+import co.touchlab.kampkit.data.dog.NetworkBreedRepository
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
@@ -42,7 +44,7 @@ fun initKoin(appModule: Module): KoinApplication {
 
 private val coreModule = module {
     single {
-        DatabaseHelper(
+        DogDatabaseHelper(
             get(),
             getWith("DatabaseHelper"),
             Dispatchers.Default
@@ -65,8 +67,8 @@ private val coreModule = module {
     val baseLogger = Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "KampKit")
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
 
-    single {
-        BreedRepository(
+    single<BreedRepository> {
+        NetworkBreedRepository(
             get(),
             get(),
             get(),

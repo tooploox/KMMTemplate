@@ -1,6 +1,7 @@
-package co.touchlab.kampkit.models
+package co.touchlab.kampkit.ui.breeds
 
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.core.ViewModel
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Job
@@ -12,25 +13,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
 
-@ObjCName("BreedViewModelDelegate")
-class BreedViewModel(
+@ObjCName("BreedsViewModelDelegate")
+class BreedsViewModel(
     private val breedRepository: BreedRepository,
     log: Logger
 ) : ViewModel() {
-    private val log = log.withTag("BreedViewModel")
+    private val log = log.withTag("BreedsViewModel")
 
-    private val mutableBreedState: MutableStateFlow<BreedViewState> =
-        MutableStateFlow(BreedViewState(isLoading = true))
+    private val mutableBreedState: MutableStateFlow<BreedsViewState> =
+        MutableStateFlow(BreedsViewState(isLoading = true))
 
     @NativeCoroutinesState
-    val breedState: StateFlow<BreedViewState> = mutableBreedState
+    val breedsState: StateFlow<BreedsViewState> = mutableBreedState
 
     init {
         observeBreeds()
-    }
-
-    override fun onCleared() {
-        log.v("Clearing BreedViewModel")
     }
 
     private fun observeBreeds() {
@@ -53,7 +50,7 @@ class BreedViewModel(
                         } else {
                             previousState.error
                         }
-                        BreedViewState(
+                        BreedsViewState(
                             isLoading = false,
                             breeds = breeds,
                             error = errorMessage.takeIf { breeds.isEmpty() },
@@ -77,9 +74,9 @@ class BreedViewModel(
         }
     }
 
-    fun updateBreedFavorite(breed: Breed): Job {
+    fun updateBreedFavorite(breedId: Long): Job {
         return viewModelScope.launch {
-            breedRepository.updateBreedFavorite(breed)
+            breedRepository.updateBreedFavorite(breedId)
         }
     }
 
@@ -87,24 +84,11 @@ class BreedViewModel(
         log.e(throwable) { "Error downloading breed list" }
         mutableBreedState.update {
             if (it.breeds.isEmpty()) {
-                BreedViewState(error = "Unable to refresh breed list")
+                BreedsViewState(error = "Unable to refresh breed list")
             } else {
                 // Just let it fail silently if we have a cache
                 it.copy(isLoading = false)
             }
         }
-    }
-}
-
-data class BreedViewState(
-    val breeds: List<Breed> = emptyList(),
-    val error: String? = null,
-    val isLoading: Boolean = false,
-    val isEmpty: Boolean = false
-) {
-    companion object {
-        // This method lets you use the default constructor values in Swift. When accessing the
-        // constructor directly, they will not work there and would need to be provided explicitly.
-        fun default() = BreedViewState()
     }
 }
