@@ -55,7 +55,7 @@ fun BreedsScreen(
         onRefresh = { viewModel.refreshBreeds() },
         onSuccess = { data -> log.v { "View updating with ${data.size} breeds" } },
         onError = { exception -> log.e { "Displaying error: $exception" } },
-        onBreedClick = { viewModel.navigateToDetails(it) },
+        onBreedClick = { viewModel.onBreedClick(it) },
     )
 }
 

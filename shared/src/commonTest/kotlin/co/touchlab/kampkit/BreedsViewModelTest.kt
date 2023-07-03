@@ -140,7 +140,7 @@ class BreedsViewModelTest {
     @Test
     fun `Navigate to breed details`() = runTest {
         dbHelper.insertBreeds(breedNames)
-        viewModel.navigateToDetails(1).join()
+        viewModel.onBreedClick(1).join()
 
         viewModel.breedState.test {
             val state = awaitItem()

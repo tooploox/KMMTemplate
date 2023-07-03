@@ -13,10 +13,10 @@ import KMPNativeCoroutinesCombine
 import Foundation
 
 class BreedDetailsViewModel: ObservableObject {
-    private var viewModel: BreedDetailsViewModelDelegate
+    private var viewModelDelegate: BreedDetailsViewModelDelegate
 
     init(breedId: Int64) {
-        self.viewModel = KotlinDependencies.shared.getBreedDetailsViewModel(breedId: breedId)
+        self.viewModelDelegate = KotlinDependencies.shared.getBreedDetailsViewModel(breedId: breedId)
     }
 
     @Published
@@ -24,8 +24,12 @@ class BreedDetailsViewModel: ObservableObject {
 
     private var cancellables = [AnyCancellable]()
 
+    func onFavoriteClick() {
+        viewModelDelegate.onFavoriteClick()
+    }
+    
     func activate() {
-        createPublisher(for: viewModel.detailsStateFlow)
+        createPublisher(for: viewModelDelegate.detailsStateFlow)
             .sink { _ in } receiveValue: { [weak self] (detailsState: BreedDetailsViewState) in
                 self?.detailsState = detailsState
             }
@@ -38,7 +42,7 @@ class BreedDetailsViewModel: ObservableObject {
     }
 
     deinit {
-        viewModel.clear()
+        viewModelDelegate.clear()
     }
 }
 
@@ -48,7 +52,9 @@ struct BreedDetailsScreen: View {
 
     var body: some View {
         BreedDetailsContent(
-            breedName: viewModel.detailsState.breed.name
+            breedName: viewModel.detailsState.breed.name,
+            isBreedFavorite: viewModel.detailsState.breed.favorite,
+            onFavoriteClick: { viewModel.onFavoriteClick() }
         )
         .onAppear(perform: {
             viewModel.activate()
@@ -61,7 +67,15 @@ struct BreedDetailsScreen: View {
 
 struct BreedDetailsContent: View {
     var breedName: String
+    var isBreedFavorite: Bool
+    var onFavoriteClick: () -> Void
     var body: some View {
-        Text(breedName)
+        HStack {
+            Text(breedName)
+            Button(action: onFavoriteClick) {
+                Image(systemName: (!isBreedFavorite) ? "heart" : "heart.fill")
+                    .padding(4.0)
+            }
+        }
     }
 }

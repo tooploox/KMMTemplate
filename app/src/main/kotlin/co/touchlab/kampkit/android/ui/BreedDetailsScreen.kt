@@ -41,7 +41,7 @@ fun BreedDetailsScreen(
                 Spacer(Modifier.width(4.dp))
                 FavoriteIcon(
                     breed = state.breed,
-                    onClick = viewModel::toggleFavorite
+                    onClick = viewModel::onFavoriteClick
                 )
             }
         }

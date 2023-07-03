@@ -79,7 +79,7 @@ class BreedsViewModel(
         }
     }
 
-    fun navigateToDetails(breedId: Long): Job {
+    fun onBreedClick(breedId: Long): Job {
         return viewModelScope.launch {
             mutableBreedState.update {
                 it.copy(breedsNavRequest = BreedsNavRequest.ToDetails(breedId))

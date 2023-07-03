@@ -47,8 +47,8 @@ class BreedsViewModel: ObservableObject {
         cancellables.removeAll()
     }
 
-    func onBreedFavorite(_ breedId: Int64) {
-        viewModelDelegate.updateBreedFavorite(breedId: breedId)
+    func onBreedClick(_ breedId: Int64) {
+        viewModelDelegate.onBreedClick(breedId: breedId)
     }
 
     func refresh() {

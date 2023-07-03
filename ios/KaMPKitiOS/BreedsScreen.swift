@@ -23,7 +23,7 @@ struct BreedsScreen: View {
             loading: viewModel.state.isLoading,
             breeds: viewModel.state.breeds,
             error: viewModel.state.error,
-            onBreedFavorite: { viewModel.onBreedFavorite($0) },
+            onBreedClick: { viewModel.onBreedClick($0) },
             refresh: { viewModel.refresh() }
         )
         .onAppear(perform: {
@@ -39,7 +39,7 @@ struct BreedListContent: View {
     var loading: Bool
     var breeds: [Breed]?
     var error: String?
-    var onBreedFavorite: (Breed) -> Void
+    var onBreedClick: (Int64) -> Void
     var refresh: () -> Void
 
     var body: some View {
@@ -48,7 +48,7 @@ struct BreedListContent: View {
                 if let breeds = breeds {
                     List(breeds, id: \.id) { breed in
                         BreedRowView(breed: breed) {
-                            onBreedFavorite(breed)
+                            onBreedClick(breed.id)
                         }
                     }
                 }
@@ -91,7 +91,7 @@ struct BreedListScreen_Previews: PreviewProvider {
                 Breed(id: 1, name: "australian", favorite: true)
             ],
             error: nil,
-            onBreedFavorite: { _ in },
+            onBreedClick: { _ in },
             refresh: {}
         )
     }

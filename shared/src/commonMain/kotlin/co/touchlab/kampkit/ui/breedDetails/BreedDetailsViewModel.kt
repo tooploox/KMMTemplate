@@ -44,7 +44,9 @@ class BreedDetailsViewModel(
         }
     }
 
-    fun toggleFavorite() = viewModelScope.launch {
-        dogRepository.updateBreedFavorite(breedId)
+    fun onFavoriteClick() {
+        viewModelScope.launch {
+            dogRepository.updateBreedFavorite(breedId)
+        }
     }
 }
