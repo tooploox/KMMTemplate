@@ -16,7 +16,7 @@ struct BreedsScreen: View {
     var body: some View {
         BreedsContent(
             state: viewModel.state,
-            onBreedFavorite: { viewModel.onBreedFavorite(breed: $0) },
+            onBreedFavorite: { viewModel.onBreedFavorite($0) },
             refresh: { viewModel.refresh() }
         )
         .onAppear(perform: {
@@ -30,7 +30,7 @@ struct BreedsScreen: View {
 
 struct BreedsContent: View {
     var state: BreedsViewState
-    var onBreedFavorite: (Breed) -> Void
+    var onBreedFavorite: (Int64) -> Void
     var refresh: () -> Void
 
     var body: some View {
@@ -38,7 +38,7 @@ struct BreedsContent: View {
             VStack {
                 List(state.breeds, id: \.id) { breed in
                     BreedRowView(breed: breed) {
-                        onBreedFavorite(breed)
+                        onBreedFavorite(breed.id)
                     }
                 }
                 if let error = state.error {
