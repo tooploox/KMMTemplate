@@ -1,8 +1,5 @@
 package co.touchlab.kampkit.android.ui
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +29,6 @@ import co.touchlab.kampkit.android.R
 import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewState
-import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.ui.breeds.BreedViewState
-import co.touchlab.kampkit.ui.breeds.BreedsViewModel
-import co.touchlab.kampkit.ui.breeds.BreedsNavRequest
 import co.touchlab.kermit.Logger
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -48,7 +41,7 @@ fun BreedsScreen(
 ) {
     val breedsState by viewModel.breedsState.collectAsStateWithLifecycle()
 
-    dogsState.breedsNavRequest?.let { navRequest ->
+    breedsState.breedsNavRequest?.let { navRequest ->
         LaunchedEffect(navRequest) {
             if (navRequest is BreedsNavRequest.ToDetails) {
                 onBreedDetailsNavRequest(navRequest.breedId)
@@ -57,12 +50,12 @@ fun BreedsScreen(
         }
     }
 
-    MainScreenContent(
+    BreedsScreenContent(
         dogsState = breedsState,
         onRefresh = { viewModel.refreshBreeds() },
         onSuccess = { data -> log.v { "View updating with ${data.size} breeds" } },
         onError = { exception -> log.e { "Displaying error: $exception" } },
-        onFavorite = { viewModel.updateBreedFavorite(it.id) }
+        onBreedClick = { viewModel.navigateToDetails(it) },
     )
 }
 
@@ -72,7 +65,7 @@ fun BreedsScreenContent(
     onRefresh: () -> Unit = {},
     onSuccess: (List<Breed>) -> Unit = {},
     onError: (String) -> Unit = {},
-    onFavorite: (Breed) -> Unit = {}
+    onBreedClick: (breedId: Long) -> Unit = {},
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -133,17 +126,17 @@ fun Error(error: String) {
 @Composable
 fun Success(
     successData: List<Breed>,
-    favoriteBreed: (Breed) -> Unit
+    onBreedClick: (breedId: Long) -> Unit
 ) {
-    DogList(breeds = successData, favoriteBreed)
+    DogList(breeds = successData, onBreedClick)
 }
 
 @Composable
-fun DogList(breeds: List<Breed>, onItemClick: (Breed) -> Unit) {
+fun DogList(breeds: List<Breed>, onItemClick: (breedId: Long) -> Unit) {
     LazyColumn {
         items(breeds) { breed ->
             DogRow(breed) {
-                onItemClick(it)
+                onItemClick(breed.id)
             }
             Divider()
         }
@@ -164,24 +157,16 @@ fun DogRow(breed: Breed, onClick: (Breed) -> Unit) {
 
 @Composable
 fun FavoriteIcon(breed: Breed) {
-    Crossfade(
-        targetState = !breed.favorite,
-        animationSpec = TweenSpec(
-            durationMillis = 500,
-            easing = FastOutSlowInEasing
+    if (!breed.favorite) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_favorite_border_24px),
+            contentDescription = stringResource(R.string.favorite_breed, breed.name)
         )
-    ) { fav ->
-        if (fav) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_favorite_border_24px),
-                contentDescription = stringResource(R.string.favorite_breed, breed.name)
-            )
-        } else {
-            Image(
-                painter = painterResource(id = R.drawable.ic_favorite_24px),
-                contentDescription = stringResource(R.string.unfavorite_breed, breed.name)
-            )
-        }
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_favorite_24px),
+            contentDescription = stringResource(R.string.unfavorite_breed, breed.name)
+        )
     }
 }
 

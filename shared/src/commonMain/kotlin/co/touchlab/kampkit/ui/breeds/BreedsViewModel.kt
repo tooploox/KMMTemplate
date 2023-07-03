@@ -1,9 +1,7 @@
 package co.touchlab.kampkit.ui.breeds
 
-import co.touchlab.kampkit.db.Breed
 import co.touchlab.kampkit.core.ViewModel
-import co.touchlab.kampkit.data.dog.DogRepository
-import co.touchlab.kampkit.core.ViewModel
+import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -35,12 +33,6 @@ class BreedsViewModel(
 
     override fun onCleared() {
         log.v("Clearing BreedViewModel")
-    }
-
-    fun onBreedDetailsNavRequestCompleted() {
-        mutableBreedState.update {
-            it.copy(breedsNavRequest = null)
-        }
     }
 
     private fun observeBreeds() {
@@ -87,12 +79,17 @@ class BreedsViewModel(
         }
     }
 
-    fun updateBreedFavorite(breedId: Long): Job {
+    fun navigateToDetails(breedId: Long): Job {
         return viewModelScope.launch {
             mutableBreedState.update {
-                it.copy(breedsNavRequest = BreedsNavRequest.ToDetails(breed.id))
+                it.copy(breedsNavRequest = BreedsNavRequest.ToDetails(breedId))
             }
-            dogRepository.updateBreedFavorite(breed)
+        }
+    }
+
+    fun onBreedDetailsNavRequestCompleted() {
+        mutableBreedState.update {
+            it.copy(breedsNavRequest = null)
         }
     }
 

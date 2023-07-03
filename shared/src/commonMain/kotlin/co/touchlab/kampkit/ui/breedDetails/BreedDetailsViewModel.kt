@@ -43,5 +43,9 @@ class BreedDetailsViewModel(
             }
         }
     }
+
+    fun toggleFavorite() = viewModelScope.launch {
+        dogRepository.updateBreedFavorite(breedId)
+    }
 }
 

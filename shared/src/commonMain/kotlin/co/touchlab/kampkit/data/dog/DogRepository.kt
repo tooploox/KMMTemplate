@@ -5,6 +5,7 @@ import co.touchlab.kermit.Logger
 import co.touchlab.stately.ensureNeverFrozen
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 
 class DogRepository(
@@ -47,7 +48,8 @@ class DogRepository(
         }
     }
 
-    suspend fun updateBreedFavorite(breed: Breed) {
+    suspend fun updateBreedFavorite(breedId: Long) {
+        val breed = dbHelper.selectById(breedId).first() ?: throw Exception("Breed not found")
         dbHelper.updateFavorite(breed.id, !breed.favorite)
     }
 
