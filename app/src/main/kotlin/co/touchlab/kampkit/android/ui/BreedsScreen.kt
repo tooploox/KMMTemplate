@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kampkit.android.R
 import co.touchlab.kampkit.domain.breed.Breed
+import co.touchlab.kampkit.ui.breeds.BreedsNavRequest
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kermit.Logger
@@ -83,7 +84,7 @@ fun BreedsScreenContent(
                     LaunchedEffect(breeds) {
                         onSuccess(breeds)
                     }
-                    Success(successData = breeds, favoriteBreed = onFavorite)
+                    Success(successData = breeds, onBreedClick = onBreedClick)
                 }
             }
 

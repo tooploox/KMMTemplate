@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.time.Duration.Companion.hours
 
-class NetworkDogRepositoryTest {
+class NetworkBreedRepositoryTest {
 
     private var kermit = Logger(StaticConfig())
     private var testDbConnection = testDbConnection()

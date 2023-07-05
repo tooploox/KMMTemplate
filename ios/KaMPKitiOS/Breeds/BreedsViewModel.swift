@@ -35,7 +35,7 @@ class BreedsViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func handleNavRequests(breedsState: BreedViewState) {
+    private func handleNavRequests(breedsState: BreedsViewState) {
         if let navRequest = breedsState.breedsNavRequest as? BreedsNavRequest.ToDetails {
             self.navCoordinator.onBreedDetailsRequest(breedId: navRequest.breedId)
             self.viewModelDelegate.onBreedDetailsNavRequestCompleted()

@@ -1,8 +1,6 @@
 package co.touchlab.kampkit.data.dog
 
 import co.touchlab.kampkit.core.transactionWithContext
-import co.touchlab.kampkit.db.Breed
-import co.touchlab.kampkit.core.transactionWithContext
 import co.touchlab.kampkit.db.DbBreed
 import co.touchlab.kampkit.db.KaMPKitDb
 import co.touchlab.kermit.Logger

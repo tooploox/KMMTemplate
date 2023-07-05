@@ -1,7 +1,7 @@
 package co.touchlab.kampkit.ui.breedDetails
 
 import co.touchlab.kampkit.core.ViewModel
-import co.touchlab.kampkit.data.dog.DogRepository
+import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlin.native.ObjCName
 @ObjCName("BreedDetailsViewModelDelegate")
 class BreedDetailsViewModel(
     private val breedId: Long,
-    private val dogRepository: DogRepository,
+    private val breedRepository: BreedRepository,
     log: Logger
 ) : ViewModel() {
     private val log = log.withTag("BreedDetailsViewModel")
@@ -30,7 +30,7 @@ class BreedDetailsViewModel(
 
     private fun loadDetails() {
         viewModelScope.launch {
-            dogRepository.getBreed(breedId).collect { breed ->
+            breedRepository.getBreed(breedId).collect { breed ->
                 mutableDetailsState.update { previousState ->
                     val error = if (breed == null) "Couldn't load the breed details" else null
                     val newBreed = breed?.toDisplayable() ?: previousState.breed
@@ -46,7 +46,7 @@ class BreedDetailsViewModel(
 
     fun onFavoriteClick() {
         viewModelScope.launch {
-            dogRepository.updateBreedFavorite(breedId)
+            breedRepository.updateBreedFavorite(breedId)
         }
     }
 }

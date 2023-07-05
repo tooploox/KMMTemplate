@@ -6,7 +6,8 @@ data class BreedsViewState(
     val breeds: List<Breed> = emptyList(),
     val error: String? = null,
     val isLoading: Boolean = false,
-    val isEmpty: Boolean = false
+    val isEmpty: Boolean = false,
+    val breedsNavRequest: BreedsNavRequest? = null
 ) {
     companion object {
         // This method lets you use the default constructor values in Swift. When accessing the

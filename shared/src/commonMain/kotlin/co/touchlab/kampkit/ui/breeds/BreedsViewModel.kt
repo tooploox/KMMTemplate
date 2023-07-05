@@ -1,7 +1,6 @@
 package co.touchlab.kampkit.ui.breeds
 
 import co.touchlab.kampkit.core.ViewModel
-import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -103,19 +102,5 @@ class BreedsViewModel(
                 it.copy(isLoading = false)
             }
         }
-    }
-}
-
-data class BreedViewState(
-    val breeds: List<Breed> = emptyList(),
-    val error: String? = null,
-    val isLoading: Boolean = false,
-    val isEmpty: Boolean = false,
-    val breedsNavRequest: BreedsNavRequest? = null
-) {
-    companion object {
-        // This method lets you use the default constructor values in Swift. When accessing the
-        // constructor directly, they will not work there and would need to be provided explicitly.
-        fun default() = BreedViewState()
     }
 }

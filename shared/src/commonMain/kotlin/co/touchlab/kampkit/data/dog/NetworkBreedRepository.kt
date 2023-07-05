@@ -18,7 +18,7 @@ class NetworkBreedRepository(
     private val clock: Clock
 ) : BreedRepository {
 
-    private val log = log.withTag("DogRepository")
+    private val log = log.withTag("NetworkBreedRepository")
 
     companion object {
         internal const val DB_TIMESTAMP_KEY = "DbTimestampKey"
@@ -28,10 +28,15 @@ class NetworkBreedRepository(
         ensureNeverFrozen()
     }
 
+    override fun getBreed(id: Long): Flow<Breed?> {
+        return dbHelper
+            .selectById(id)
+            .map { dbBreed -> dbBreed?.toDomain() }
+    }
     override fun getBreeds(): Flow<List<Breed>> {
-        return dbHelper.selectAllItems().map { list ->
-            list.map { dbBreed -> dbBreed.toDomain() }
-        }
+        return dbHelper
+            .selectAllItems()
+            .map { list -> list.map { dbBreed -> dbBreed.toDomain() } }
     }
 
     override suspend fun refreshBreedsIfStale() {
@@ -53,8 +58,10 @@ class NetworkBreedRepository(
     }
 
     override suspend fun updateBreedFavorite(breedId: Long) {
-        val foundBreedsWithId = dbHelper.selectById(breedId).first()
-        foundBreedsWithId.firstOrNull()?.let { breed ->
+        dbHelper
+            .selectById(breedId)
+            .first()
+            ?.let { breed ->
             dbHelper.updateFavorite(breed.id, !breed.favorite)
         }
     }

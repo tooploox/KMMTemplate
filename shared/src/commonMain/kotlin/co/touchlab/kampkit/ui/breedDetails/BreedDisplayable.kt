@@ -1,6 +1,6 @@
 package co.touchlab.kampkit.ui.breedDetails
 
-import co.touchlab.kampkit.db.Breed
+import co.touchlab.kampkit.domain.breed.Breed
 
 data class BreedDisplayable(
     val id: Long = 0,

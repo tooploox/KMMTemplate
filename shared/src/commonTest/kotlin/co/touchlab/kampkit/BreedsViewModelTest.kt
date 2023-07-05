@@ -142,7 +142,7 @@ class BreedsViewModelTest {
         dbHelper.insertBreeds(breedNames)
         viewModel.onBreedClick(1).join()
 
-        viewModel.breedState.test {
+        viewModel.breedsState.test {
             val state = awaitItem()
             assertEquals(BreedsNavRequest.ToDetails(1), state.breedsNavRequest)
         }
