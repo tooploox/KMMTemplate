@@ -60,10 +60,9 @@ class NetworkBreedRepository(
     override suspend fun updateBreedFavorite(breedId: Long) {
         dbHelper
             .selectById(breedId)
-            .first()
-            ?.let { breed ->
-            dbHelper.updateFavorite(breed.id, !breed.favorite)
-        }
+            .first()?.let { breed ->
+                dbHelper.updateFavorite(breed.id, !breed.favorite)
+            }
     }
 
     private fun isBreedListStale(): Boolean {
