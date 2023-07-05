@@ -30,10 +30,6 @@ class BreedsViewModel(
         observeBreeds()
     }
 
-    override fun onCleared() {
-        log.v("Clearing BreedViewModel")
-    }
-
     private fun observeBreeds() {
         // Refresh breeds, and emit any exception that was thrown so we can handle it downstream
         val refreshFlow = flow<Throwable?> {
