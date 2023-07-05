@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kampkit.android.R
+import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
-import co.touchlab.kampkit.ui.breedDetails.BreedDisplayable
 import co.touchlab.kermit.Logger
 
 @Composable
@@ -51,7 +51,7 @@ fun BreedDetailsScreen(
 
 @Composable
 fun FavoriteIcon(
-    breed: BreedDisplayable,
+    breed: Breed,
     onClick: () -> Unit
 ) {
     Crossfade(

@@ -33,10 +33,9 @@ class BreedDetailsViewModel(
             breedRepository.getBreed(breedId).collect { breed ->
                 mutableDetailsState.update { previousState ->
                     val error = if (breed == null) "Couldn't load the breed details" else null
-                    val newBreed = breed?.toDisplayable() ?: previousState.breed
                     previousState.copy(
                         isLoading = false,
-                        breed = newBreed,
+                        breed = breed ?: previousState.breed,
                         error = error
                     )
                 }
