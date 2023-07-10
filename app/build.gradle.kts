@@ -56,4 +56,5 @@ dependencies {
     testImplementation(libs.junit)
     implementation(libs.compose.navigation)
     implementation(libs.koin.compose)
+    implementation(libs.google.services)
 }

@@ -16,10 +16,13 @@ private const val BREEDS = "breeds"
 private const val BREED_DETAILS = "breedDetails"
 private const val BREED_ID_ARG = "breedId"
 
+private const val SIGN_IN = "signIn"
+
 @Composable
 fun MainNavCoordinator() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "breeds") {
+    NavHost(navController = navController, startDestination = SIGN_IN) {
+        composable(SIGN_IN) { SignInScreen(koinViewModel()) }
         composable(BREEDS) {
             BreedsScreen(
                 viewModel = koinViewModel(),
