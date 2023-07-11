@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3C61D1352A55909300D4DF1D /* BreedDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C61D1342A55909300D4DF1D /* BreedDetailsViewModel.swift */; };
+		3C652F282A5D336600B402BA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3C652F272A5D336600B402BA /* GoogleSignIn */; };
+		3C652F2A2A5D336600B402BA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3C652F292A5D336600B402BA /* GoogleSignInSwift */; };
+		3C652F2D2A5D34B300B402BA /* SignInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C652F2C2A5D34B300B402BA /* SignInScreen.swift */; };
+		3C652F2F2A5D34BD00B402BA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C652F2E2A5D34BD00B402BA /* SignInViewModel.swift */; };
 		3C6AEC072A30881B0003F34A /* BreedDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEC062A30881B0003F34A /* BreedDetailsScreen.swift */; };
 		3C6AEC092A30C17A0003F34A /* MainNavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEC082A30C17A0003F34A /* MainNavCoordinator.swift */; };
 		3C73D04A2A335103003E6929 /* BreedsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C73D0492A335103003E6929 /* BreedsViewModel.swift */; };
@@ -45,6 +49,8 @@
 		1DFCC00C8DAA719770A18D1A /* Pods-KaMPKitiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KaMPKitiOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-KaMPKitiOS/Pods-KaMPKitiOS.release.xcconfig"; sourceTree = "<group>"; };
 		2A1ED6A4A2A53F5F75C58E5F /* Pods-KaMPKitiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KaMPKitiOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-KaMPKitiOS/Pods-KaMPKitiOS.release.xcconfig"; sourceTree = "<group>"; };
 		3C61D1342A55909300D4DF1D /* BreedDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailsViewModel.swift; sourceTree = "<group>"; };
+		3C652F2C2A5D34B300B402BA /* SignInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreen.swift; sourceTree = "<group>"; };
+		3C652F2E2A5D34BD00B402BA /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		3C6AEC062A30881B0003F34A /* BreedDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailsScreen.swift; sourceTree = "<group>"; };
 		3C6AEC082A30C17A0003F34A /* MainNavCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavCoordinator.swift; sourceTree = "<group>"; };
 		3C73D0492A335103003E6929 /* BreedsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsViewModel.swift; sourceTree = "<group>"; };
@@ -72,7 +78,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C652F2A2A5D336600B402BA /* GoogleSignInSwift in Frameworks */,
 				3DFF917C64A18A83DA010EE1 /* Pods_KaMPKitiOS.framework in Frameworks */,
+				3C652F282A5D336600B402BA /* GoogleSignIn in Frameworks */,
 				3CD290EC2A251417004C7AD1 /* KMPNativeCoroutinesCombine in Frameworks */,
 				3CD290EE2A251417004C7AD1 /* KMPNativeCoroutinesCore in Frameworks */,
 			);
@@ -102,6 +110,15 @@
 				3C61D1342A55909300D4DF1D /* BreedDetailsViewModel.swift */,
 			);
 			path = BreedDetails;
+			sourceTree = "<group>";
+		};
+		3C652F2B2A5D34A500B402BA /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				3C652F2C2A5D34B300B402BA /* SignInScreen.swift */,
+				3C652F2E2A5D34BD00B402BA /* SignInViewModel.swift */,
+			);
+			path = SignIn;
 			sourceTree = "<group>";
 		};
 		3C73D0482A335061003E6929 /* Breeds */ = {
@@ -157,6 +174,7 @@
 		F1465EFF23AA94BF0055F7C3 /* KaMPKitiOS */ = {
 			isa = PBXGroup;
 			children = (
+				3C652F2B2A5D34A500B402BA /* SignIn */,
 				3C61D1332A55908200D4DF1D /* BreedDetails */,
 				3C73D0482A335061003E6929 /* Breeds */,
 				F1465F0023AA94BF0055F7C3 /* AppDelegate.swift */,
@@ -210,6 +228,8 @@
 			packageProductDependencies = (
 				3CD290EB2A251417004C7AD1 /* KMPNativeCoroutinesCombine */,
 				3CD290ED2A251417004C7AD1 /* KMPNativeCoroutinesCore */,
+				3C652F272A5D336600B402BA /* GoogleSignIn */,
+				3C652F292A5D336600B402BA /* GoogleSignInSwift */,
 			);
 			productName = KaMPKitiOS;
 			productReference = F1465EFD23AA94BF0055F7C3 /* KaMPKitiOS.app */;
@@ -285,6 +305,7 @@
 			mainGroup = F1465EF423AA94BF0055F7C3;
 			packageReferences = (
 				3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
+				3C652F262A5D336600B402BA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = F1465EFE23AA94BF0055F7C3 /* Products */;
 			projectDirPath = "";
@@ -391,7 +412,9 @@
 			files = (
 				46B5284D249C5CF400A7725D /* Koin.swift in Sources */,
 				3C73D04A2A335103003E6929 /* BreedsViewModel.swift in Sources */,
+				3C652F2D2A5D34B300B402BA /* SignInScreen.swift in Sources */,
 				3C61D1352A55909300D4DF1D /* BreedDetailsViewModel.swift in Sources */,
+				3C652F2F2A5D34BD00B402BA /* SignInViewModel.swift in Sources */,
 				46A5B5EF26AF54F7002EFEAA /* BreedsScreen.swift in Sources */,
 				46A5B5EF26AF54F7002EFEAA /* BreedsScreen.swift in Sources */,
 				F1465F0123AA94BF0055F7C3 /* AppDelegate.swift in Sources */,
@@ -753,6 +776,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3C652F262A5D336600B402BA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines.git";
@@ -764,6 +795,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3C652F272A5D336600B402BA /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C652F262A5D336600B402BA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		3C652F292A5D336600B402BA /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C652F262A5D336600B402BA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		3CD290EB2A251417004C7AD1 /* KMPNativeCoroutinesCombine */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;

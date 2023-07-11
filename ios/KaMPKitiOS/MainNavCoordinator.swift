@@ -17,7 +17,7 @@ class MainNavCoordinator: BreedsNavCoordinator {
     }
     
     func start() {
-        let controller = buildBreedsController(navCoordinator: self)
+        let controller = buildSignInController(rootViewController: navController)
         navController.pushViewController(controller, animated: false)
     }
     
@@ -35,6 +35,11 @@ private func buildBreedsController(navCoordinator: BreedsNavCoordinator) -> UIHo
 private func buildBreedDetailsController(breedId: Int64) -> UIHostingController<BreedDetailsScreen> {
     let viewModel = BreedDetailsViewModel(breedId: breedId)
     return UIHostingController(rootView: BreedDetailsScreen(viewModel: viewModel))
+}
+
+private func buildSignInController(rootViewController: UIViewController) -> UIHostingController<SignInScreen> {
+    let viewModel = SignInViewModel(rootViewController: rootViewController)
+    return UIHostingController(rootView: SignInScreen(viewModel: viewModel))
 }
 
 protocol BreedsNavCoordinator {

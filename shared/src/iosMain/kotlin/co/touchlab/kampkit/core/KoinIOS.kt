@@ -3,6 +3,7 @@ package co.touchlab.kampkit.core
 import co.touchlab.kampkit.db.KaMPKitDb
 import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
+import co.touchlab.kampkit.ui.signin.SignInViewModel
 import co.touchlab.kermit.Logger
 import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
@@ -36,6 +37,8 @@ actual val platformModule = module {
     factory { BreedsViewModel(get(), getWith("BreedsViewModel")) }
 
     factory { params -> BreedDetailsViewModel(params.get(), get(), getWith("BreedDetailsViewModel")) }
+
+    factory { SignInViewModel() }
 }
 
 // Access from Swift to create a logger
@@ -47,4 +50,5 @@ fun Koin.loggerWithTag(tag: String) =
 object KotlinDependencies : KoinComponent {
     fun getBreedsViewModel() = getKoin().get<BreedsViewModel>()
     fun getBreedDetailsViewModel(breedId: Long) = getKoin().get<BreedDetailsViewModel> { parametersOf(breedId) }
+    fun getSignInViewModel() = getKoin().get<SignInViewModel>()
 }

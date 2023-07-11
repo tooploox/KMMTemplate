@@ -6,4 +6,7 @@ data class SignInViewState(
 ) {
     val isUserLoggedIn
         get() = currentUserName != null
+    companion object {
+        fun default() = SignInViewState()
+    }
 }
