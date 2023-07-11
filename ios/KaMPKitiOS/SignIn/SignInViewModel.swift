@@ -20,8 +20,8 @@ class SignInViewModel: ObservableObject {
     private var viewModelDelegate: SignInViewModelDelegate = KotlinDependencies.shared.getSignInViewModel()
     private var viewController: UIViewController
     private var cancellables = [AnyCancellable]()
-    init(rootViewController: UIViewController) {
-        self.viewController = rootViewController
+    init(viewController: UIViewController) {
+        self.viewController = viewController
     }
 
     deinit {

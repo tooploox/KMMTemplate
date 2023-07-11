@@ -17,7 +17,7 @@ class MainNavCoordinator: BreedsNavCoordinator {
     }
     
     func start() {
-        let controller = buildSignInController(rootViewController: navController)
+        let controller = buildSignInController(viewController: navController)
         navController.pushViewController(controller, animated: false)
     }
     
@@ -37,8 +37,8 @@ private func buildBreedDetailsController(breedId: Int64) -> UIHostingController<
     return UIHostingController(rootView: BreedDetailsScreen(viewModel: viewModel))
 }
 
-private func buildSignInController(rootViewController: UIViewController) -> UIHostingController<SignInScreen> {
-    let viewModel = SignInViewModel(rootViewController: rootViewController)
+private func buildSignInController(viewController: UIViewController) -> UIHostingController<SignInScreen> {
+    let viewModel = SignInViewModel(viewController: viewController)
     return UIHostingController(rootView: SignInScreen(viewModel: viewModel))
 }
 
