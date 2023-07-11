@@ -19,8 +19,8 @@ class BreedsViewModel: ObservableObject {
     private var viewModelDelegate: BreedsViewModelDelegate = KotlinDependencies.shared.getBreedsViewModel()
     private var cancellables = [AnyCancellable]()
     init(navCoordinator: BreedsNavCoordinator) {
-            self.navCoordinator = navCoordinator
-        }
+        self.navCoordinator = navCoordinator
+    }
 
     deinit {
         viewModelDelegate.clear()

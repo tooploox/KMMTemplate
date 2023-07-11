@@ -16,15 +16,15 @@ struct BreedDetailsScreen: View {
 
     var body: some View {
         BreedDetailsContent(
-            breedName: viewModel.detailsState.breed.name,
-            isBreedFavorite: viewModel.detailsState.breed.favorite,
+            breedName: viewModel.state.breed.name,
+            isBreedFavorite: viewModel.state.breed.favorite,
             onFavoriteClick: { viewModel.onFavoriteClick() }
         )
         .onAppear(perform: {
-            viewModel.activate()
+            viewModel.subscribeState()
         })
         .onDisappear(perform: {
-            viewModel.deactivate()
+            viewModel.unsubscribeState()
         })
     }
 }
