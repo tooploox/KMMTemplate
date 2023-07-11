@@ -14,9 +14,9 @@ import GoogleSignInSwift
 import GoogleSignIn
 
 class SignInViewModel: ObservableObject {
-    
-    @Published var signInState: SignInViewState = SignInViewState.companion.default()
-    
+
+    @Published var state: SignInViewState = SignInViewState.companion.default()
+
     private var viewModelDelegate: SignInViewModelDelegate = KotlinDependencies.shared.getSignInViewModel()
     private var viewController: UIViewController
     private var cancellables = [AnyCancellable]()
@@ -24,24 +24,14 @@ class SignInViewModel: ObservableObject {
         self.viewController = rootViewController
     }
 
-    func onSignInClick() {
-        GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { [weak self] signInResult, error in
-            let signInData = GoogleSignInData(
-                email: signInResult?.user.profile?.email,
-                error: error?.localizedDescription
-            )
-            self?.viewModelDelegate.handleSignIn(signInData: signInData)
-        }
-    }
-
-    func onSignOutClick() {
-        viewModelDelegate.handleSignOut()
+    deinit {
+        viewModelDelegate.clear()
     }
 
     func subscribeState() {
-        createPublisher(for: viewModelDelegate.stateFlow)
+        createPublisher(for: viewModelDelegate.signInStateFlow)
             .sink { _ in } receiveValue: { [weak self] (signInState: SignInViewState) in
-                self?.signInState = signInState
+                self?.state = signInState
             }
             .store(in: &cancellables)
     }
@@ -51,7 +41,17 @@ class SignInViewModel: ObservableObject {
         cancellables.removeAll()
     }
 
-    deinit {
-        viewModelDelegate.clear()
+    func onSignInClick() {
+        GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { [weak self] signInResult, error in
+            let signInData = GoogleSignInData(
+                email: signInResult?.user.profile?.email,
+                error: error?.localizedDescription
+            )
+            self?.viewModelDelegate.onSignInClick(signInData: signInData)
+        }
+    }
+
+    func onSignOutClick() {
+        viewModelDelegate.onSignOutClick()
     }
 }

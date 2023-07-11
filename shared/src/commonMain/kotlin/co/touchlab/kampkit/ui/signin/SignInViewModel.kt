@@ -10,13 +10,13 @@ import kotlin.native.ObjCName
 @ObjCName("SignInViewModelDelegate")
 class SignInViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow(SignInViewState())
+    private val mutableSignInState = MutableStateFlow(SignInViewState())
 
     @NativeCoroutinesState
-    val state: StateFlow<SignInViewState> = _state
+    val signInState: StateFlow<SignInViewState> = mutableSignInState
 
-    fun handleSignIn(signInData: GoogleSignInData) {
-        _state.update {
+    fun onSignInClick(signInData: GoogleSignInData) {
+        mutableSignInState.update {
             it.copy(
                 currentUserName = signInData.email,
                 error = signInData.error
@@ -24,8 +24,8 @@ class SignInViewModel : ViewModel() {
         }
     }
 
-    fun handleSignOut() {
-        _state.update {
+    fun onSignOutClick() {
+        mutableSignInState.update {
             it.copy(currentUserName = null)
         }
     }

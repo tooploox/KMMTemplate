@@ -27,10 +27,10 @@ fun SignInScreen(viewModel: SignInViewModel) {
             ActivityResultContracts.StartActivityForResult()
         ) { signInActivityResult ->
             val signInData = signInActivityResult.extractGoogleSignInData()
-            viewModel.handleSignIn(signInData)
+            viewModel.onSignInClick(signInData)
         }
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.signInState.collectAsStateWithLifecycle()
     Column {
         state.error?.let { error ->
             Text(error, color = Color.Red)
@@ -38,7 +38,7 @@ fun SignInScreen(viewModel: SignInViewModel) {
 
         if (state.isUserLoggedIn) {
             Text("Logged in as ${state.currentUserName}")
-            Button(onClick = { viewModel.handleSignOut() }) {
+            Button(onClick = { viewModel.onSignOutClick() }) {
                 Text("Log out")
             }
         } else {

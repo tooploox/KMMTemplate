@@ -16,8 +16,8 @@ struct SignInScreen: View {
 
     var body: some View {
         SignInScreenContent(
-            username: viewModel.signInState.currentUserName,
-            error: viewModel.signInState.error,
+            username: viewModel.state.currentUserName,
+            error: viewModel.state.error,
             onSignOut: viewModel.onSignOutClick,
             onSignIn: viewModel.onSignInClick
         )
