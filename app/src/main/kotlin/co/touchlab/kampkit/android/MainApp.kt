@@ -8,7 +8,9 @@ import co.touchlab.kampkit.core.AppInfo
 import co.touchlab.kampkit.core.initKoin
 import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
+import co.touchlab.kampkit.ui.signin.GoogleSignInFacade
 import co.touchlab.kampkit.ui.signin.SignInViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
@@ -28,7 +30,9 @@ class MainApp : Application() {
                         params.get(), get(), get { parametersOf("BreedDetailsViewModel") }
                     )
                 }
-                viewModel { SignInViewModel() }
+                viewModel { SignInViewModel(get()) }
+                single<GoogleSignInFacade> { AndroidGoogleSignInFacade(androidContext()) }
+
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", MODE_PRIVATE)
                 }

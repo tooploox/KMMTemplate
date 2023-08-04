@@ -8,14 +8,26 @@ import kotlinx.coroutines.flow.update
 import kotlin.native.ObjCName
 
 @ObjCName("SignInViewModelDelegate")
-class SignInViewModel : ViewModel() {
+class SignInViewModel(
+    private val googleSignInFacade: GoogleSignInFacade
+) : ViewModel() {
 
     private val mutableSignInState = MutableStateFlow(SignInViewState())
 
     @NativeCoroutinesState
     val signInState: StateFlow<SignInViewState> = mutableSignInState
 
-    fun onSignInClick(signInData: GoogleSignInData) {
+    fun onSignOutClick() {
+        mutableSignInState.update {
+            it.copy(currentUserName = null)
+        }
+    }
+
+    fun onGoogleSignIn() {
+        googleSignInFacade.login(onComplete = ::onCompleteGoogleSignIn)
+    }
+
+    private fun onCompleteGoogleSignIn(signInData: GoogleSignInData) {
         mutableSignInState.update {
             it.copy(
                 currentUserName = signInData.email,
@@ -23,10 +35,8 @@ class SignInViewModel : ViewModel() {
             )
         }
     }
+}
 
-    fun onSignOutClick() {
-        mutableSignInState.update {
-            it.copy(currentUserName = null)
-        }
-    }
+interface GoogleSignInFacade {
+    fun login(onComplete: (GoogleSignInData) -> Unit)
 }

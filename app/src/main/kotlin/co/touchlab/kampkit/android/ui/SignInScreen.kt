@@ -22,13 +22,13 @@ import com.google.android.gms.common.api.ApiException
 
 @Composable
 fun SignInScreen(viewModel: SignInViewModel) {
-    val signInLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { signInActivityResult ->
-            val signInData = signInActivityResult.extractGoogleSignInData()
-            viewModel.onSignInClick(signInData)
-        }
+    // val signInLauncher =
+    //     rememberLauncherForActivityResult(
+    //         ActivityResultContracts.StartActivityForResult()
+    //     ) { signInActivityResult ->
+    //         val signInData = signInActivityResult.extractGoogleSignInData()
+    //         viewModel.onSignInClick(signInData)
+    //     }
 
     val state by viewModel.signInState.collectAsStateWithLifecycle()
     Column {
@@ -42,9 +42,9 @@ fun SignInScreen(viewModel: SignInViewModel) {
                 Text("Log out")
             }
         } else {
-            val context = LocalContext.current
+            // val context = LocalContext.current
             Button(
-                onClick = { signInLauncher.launch(getGoogleSignInIntent(context)) }
+                onClick = viewModel::onGoogleSignIn//{ signInLauncher.launch(getGoogleSignInIntent(context)) }
             ) {
                 Text("Google Sign In")
             }
@@ -52,25 +52,25 @@ fun SignInScreen(viewModel: SignInViewModel) {
     }
 }
 
-private fun ActivityResult.extractGoogleSignInData(): GoogleSignInData {
-    if (resultCode != Activity.RESULT_OK) {
-        return GoogleSignInData(error = "Google SignIn activity error")
-    }
-    return try {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-        val account = task.getResult(ApiException::class.java)
-        GoogleSignInData(email = account.email)
-    } catch (exception: ApiException) {
-        GoogleSignInData(error = exception.message)
-    }
-}
-
-private fun getGoogleSignInIntent(context: Context): Intent {
-    val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestEmail()
-        .requestProfile()
-        .build()
-    val client = GoogleSignIn.getClient(context, signInOptions)
-    return client.signInIntent
-}
+// private fun ActivityResult.extractGoogleSignInData(): GoogleSignInData {
+//     if (resultCode != Activity.RESULT_OK) {
+//         return GoogleSignInData(error = "Google SignIn activity error")
+//     }
+//     return try {
+//         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//         val account = task.getResult(ApiException::class.java)
+//         GoogleSignInData(email = account.email)
+//     } catch (exception: ApiException) {
+//         GoogleSignInData(error = exception.message)
+//     }
+// }
+//
+// private fun getGoogleSignInIntent(context: Context): Intent {
+//     val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//         .requestEmail()
+//         .requestProfile()
+//         .build()
+//     val client = GoogleSignIn.getClient(context, signInOptions)
+//     return client.signInIntent
+// }
 
