@@ -22,7 +22,7 @@ class MainApp : Application() {
                 viewModel {
                     BreedsViewModel(get(), get { parametersOf("BreedsViewModel") })
                 }
-                viewModel {params ->
+                viewModel { params ->
                     BreedDetailsViewModel(
                         params.get(), get(), get { parametersOf("BreedDetailsViewModel") }
                     )

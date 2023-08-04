@@ -158,15 +158,15 @@ fun DogRow(breed: Breed, onClick: (Breed) -> Unit) {
 
 @Composable
 fun FavoriteIcon(breed: Breed) {
-    if (!breed.favorite) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_favorite_border_24px),
-            contentDescription = stringResource(R.string.favorite_breed, breed.name)
-        )
-    } else {
+    if (breed.favorite) {
         Image(
             painter = painterResource(id = R.drawable.ic_favorite_24px),
             contentDescription = stringResource(R.string.unfavorite_breed, breed.name)
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_favorite_border_24px),
+            contentDescription = stringResource(R.string.favorite_breed, breed.name)
         )
     }
 }
