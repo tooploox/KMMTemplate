@@ -1,6 +1,5 @@
 package co.touchlab.kampkit.data.dog
 
-import co.touchlab.stately.ensureNeverFrozen
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
@@ -38,10 +37,6 @@ class DogApiImpl(private val log: KermitLogger, engine: HttpClientEngine) : DogA
             requestTimeoutMillis = timeout
             socketTimeoutMillis = timeout
         }
-    }
-
-    init {
-        ensureNeverFrozen()
     }
 
     override suspend fun getJsonFromApi(): DogResult {
