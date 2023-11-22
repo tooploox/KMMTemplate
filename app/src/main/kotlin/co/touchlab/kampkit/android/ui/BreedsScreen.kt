@@ -112,7 +112,7 @@ fun Empty() {
 }
 
 @Composable
-fun Error(error: String) {
+private fun Error(error: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
