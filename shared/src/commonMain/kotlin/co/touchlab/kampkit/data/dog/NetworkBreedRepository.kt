@@ -3,7 +3,6 @@ package co.touchlab.kampkit.data.dog
 import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
-import co.touchlab.stately.ensureNeverFrozen
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -22,10 +21,6 @@ class NetworkBreedRepository(
 
     companion object {
         internal const val DB_TIMESTAMP_KEY = "DbTimestampKey"
-    }
-
-    init {
-        ensureNeverFrozen()
     }
 
     override fun getBreeds(): Flow<List<Breed>> {
