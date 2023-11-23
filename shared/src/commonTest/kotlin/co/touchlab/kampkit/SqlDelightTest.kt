@@ -54,7 +54,7 @@ class SqlDelightTest {
         val breeds = dbHelper.selectAllItems().first()
         val firstBreed = breeds.first()
         dbHelper.updateFavorite(firstBreed.id, true)
-        val newBreed = dbHelper.selectById(firstBreed.id).first().first()
+        val newBreed = dbHelper.selectById(firstBreed.id).first()
         assertNotNull(
             newBreed,
             "Could not retrieve Breed by Id"

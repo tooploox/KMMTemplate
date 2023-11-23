@@ -50,7 +50,7 @@ class BreedsViewModel(
                         } else {
                             previousState.error
                         }
-                        BreedsViewState(
+                        previousState.copy(
                             isLoading = false,
                             breeds = breeds,
                             error = errorMessage.takeIf { breeds.isEmpty() },
@@ -74,9 +74,17 @@ class BreedsViewModel(
         }
     }
 
-    fun updateBreedFavorite(breedId: Long): Job {
+    fun onBreedClick(breedId: Long): Job {
         return viewModelScope.launch {
-            breedRepository.updateBreedFavorite(breedId)
+            mutableBreedState.update {
+                it.copy(breedsNavRequest = BreedsNavRequest.ToDetails(breedId))
+            }
+        }
+    }
+
+    fun onBreedDetailsNavRequestCompleted() {
+        mutableBreedState.update {
+            it.copy(breedsNavRequest = null)
         }
     }
 

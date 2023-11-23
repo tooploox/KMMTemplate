@@ -22,10 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         startKoin()
 
-        let viewController = UIHostingController(rootView: BreedsScreen())
+        let navController = UINavigationController()
+        let mainCoordinator = MainNavCoordinator(navController: navController)
+        mainCoordinator.start()
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = viewController
+        self.window?.rootViewController = navController
         self.window?.makeKeyAndVisible()
 
         log.v(message: {"App Started"})

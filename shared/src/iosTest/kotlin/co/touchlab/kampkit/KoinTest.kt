@@ -1,6 +1,7 @@
 package co.touchlab.kampkit
 
 import co.touchlab.kampkit.core.initKoinIos
+import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
 import co.touchlab.kermit.Logger
 import org.koin.core.context.stopKoin
 import org.koin.core.parameter.parametersOf
@@ -18,6 +19,7 @@ class KoinTest {
             doOnStartup = { }
         ).checkModules {
             withParameters<Logger> { parametersOf("TestTag") }
+            withParameters<BreedDetailsViewModel> { parametersOf(0L) }
         }
     }
 

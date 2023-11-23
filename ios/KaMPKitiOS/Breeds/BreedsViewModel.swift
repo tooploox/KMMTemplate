@@ -15,8 +15,12 @@ class BreedsViewModel: ObservableObject {
 
     @Published var state: BreedsViewState = BreedsViewState.companion.default()
 
+    private var navCoordinator: BreedsNavCoordinator
     private var viewModelDelegate: BreedsViewModelDelegate = KotlinDependencies.shared.getBreedsViewModel()
     private var cancellables = [AnyCancellable]()
+    init(navCoordinator: BreedsNavCoordinator) {
+        self.navCoordinator = navCoordinator
+    }
 
     deinit {
         viewModelDelegate.clear()
@@ -26,8 +30,16 @@ class BreedsViewModel: ObservableObject {
         createPublisher(for: viewModelDelegate.breedsStateFlow)
             .sink { _ in } receiveValue: { [weak self] (breedState: BreedsViewState) in
                 self?.state = breedState
+                self?.handleNavRequests(breedsState: breedState)
             }
             .store(in: &cancellables)
+    }
+
+    private func handleNavRequests(breedsState: BreedsViewState) {
+        if let navRequest = breedsState.breedsNavRequest as? BreedsNavRequest.ToDetails {
+            self.navCoordinator.onBreedDetailsRequest(breedId: navRequest.breedId)
+            self.viewModelDelegate.onBreedDetailsNavRequestCompleted()
+        }
     }
 
     func unsubscribeState() {
@@ -35,8 +47,8 @@ class BreedsViewModel: ObservableObject {
         cancellables.removeAll()
     }
 
-    func onBreedFavorite(_ breedId: Int64) {
-        viewModelDelegate.updateBreedFavorite(breedId: breedId)
+    func onBreedClick(_ breedId: Int64) {
+        viewModelDelegate.onBreedClick(breedId: breedId)
     }
 
     func refresh() {

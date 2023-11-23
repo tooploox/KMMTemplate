@@ -9,6 +9,7 @@ import co.touchlab.kampkit.domain.breed.Breed
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kampkit.mock.ClockMock
 import co.touchlab.kampkit.mock.DogApiMock
+import co.touchlab.kampkit.ui.breeds.BreedsNavRequest
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewState
 import co.touchlab.kermit.Logger
@@ -95,7 +96,8 @@ class BreedsViewModelTest {
         settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
-        val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
+        val resultWithExtraBreed =
+            successResult.copy(message = successResult.message + ("extra" to emptyList()))
         ktorApi.prepareResult(resultWithExtraBreed)
 
         dbHelper.insertBreeds(breedNames)
@@ -119,7 +121,8 @@ class BreedsViewModelTest {
         settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, (clock.currentInstant - 2.hours).toEpochMilliseconds())
 
         val successResult = ktorApi.successResult()
-        val resultWithExtraBreed = successResult.copy(message = successResult.message + ("extra" to emptyList()))
+        val resultWithExtraBreed =
+            successResult.copy(message = successResult.message + ("extra" to emptyList()))
         ktorApi.prepareResult(resultWithExtraBreed)
 
         dbHelper.insertBreeds(breedNames)
@@ -135,21 +138,13 @@ class BreedsViewModelTest {
     }
 
     @Test
-    fun `Toggle favorite cached breed`() = runTest {
-        settings.putLong(NetworkBreedRepository.DB_TIMESTAMP_KEY, clock.currentInstant.toEpochMilliseconds())
-
+    fun `Navigate to breed details`() = runTest {
         dbHelper.insertBreeds(breedNames)
-        dbHelper.updateFavorite(australianLike.id, true)
+        viewModel.onBreedClick(1).join()
 
         viewModel.breedsState.test {
-            assertEquals(breedsViewStateSuccessFavorite, awaitItemPrecededBy(BreedsViewState(isLoading = true)))
-            expectNoEvents()
-
-            viewModel.updateBreedFavorite(australianLike.id).join()
-            assertEquals(
-                breedsViewStateSuccessNoFavorite,
-                awaitItemPrecededBy(breedsViewStateSuccessFavorite.copy(isLoading = true))
-            )
+            val state = awaitItem()
+            assertEquals(BreedsNavRequest.ToDetails(1), state.breedsNavRequest)
         }
     }
 
