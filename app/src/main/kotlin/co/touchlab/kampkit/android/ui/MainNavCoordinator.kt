@@ -12,7 +12,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 private const val BREEDS = "breeds"
-
 private const val BREED_DETAILS = "breedDetails"
 private const val BREED_ID_ARG = "breedId"
 
@@ -36,7 +35,6 @@ fun MainNavCoordinator() {
             val breedId = it.arguments?.getLong(BREED_ID_ARG)
             BreedDetailsScreen(
                 viewModel = koinViewModel { parametersOf(breedId) },
-                log = get { parametersOf("BreedDetailsScreen") }
             )
         }
     }
