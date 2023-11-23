@@ -56,13 +56,17 @@ private fun BoxScope.DetailsContents(
 }
 
 @Composable
-private fun Error(error: String) {
-    Text(error, color = Color.Red)
+private fun BoxScope.Error(error: String) {
+    Text(
+        text = error,
+        color = Color.Red,
+        modifier = Modifier.align(Alignment.Center)
+    )
 }
 
 @Composable
-fun Loading() {
-    CircularProgressIndicator()
+fun BoxScope.Loading() {
+    CircularProgressIndicator(Modifier.align(Alignment.Center))
 }
 
 @Composable

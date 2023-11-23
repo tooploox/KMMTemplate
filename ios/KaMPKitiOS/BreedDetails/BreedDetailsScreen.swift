@@ -15,11 +15,22 @@ struct BreedDetailsScreen: View {
     var viewModel: BreedDetailsViewModel
 
     var body: some View {
-        BreedDetailsContent(
-            breedName: viewModel.state.breed.name,
-            isBreedFavorite: viewModel.state.breed.favorite,
-            onFavoriteClick: { viewModel.onFavoriteClick() }
-        )
+        let state = viewModel.state
+        ZStack {
+            if let error = state.error {
+                Text(error)
+            }
+            if state.error == nil && state.isLoading {
+                ProgressView()
+            }
+            if let breed = state.breed, state.error == nil, !state.isLoading {
+                BreedDetailsContent(
+                    breedName: breed.name,
+                    isBreedFavorite: breed.favorite,
+                    onFavoriteClick: { viewModel.onFavoriteClick() }
+                )
+            }
+        }
         .onAppear(perform: {
             viewModel.subscribeState()
         })
