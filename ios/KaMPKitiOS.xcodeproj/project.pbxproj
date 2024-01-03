@@ -130,6 +130,30 @@
 			path = Breeds;
 			sourceTree = "<group>";
 		};
+		579753BDA8BAA9A5A399C611 /* bartlomiejpedryc.xcuserdatad */ = {
+			isa = PBXGroup;
+			children = (
+				57975F3C51683ABE14191024 /* xcschemes */,
+			);
+			path = bartlomiejpedryc.xcuserdatad;
+			sourceTree = "<group>";
+		};
+		5797556592C6669DF1E7702C /* xcuserdata */ = {
+			isa = PBXGroup;
+			children = (
+				579753BDA8BAA9A5A399C611 /* bartlomiejpedryc.xcuserdatad */,
+			);
+			name = xcuserdata;
+			path = KaMPKitiOS.xcodeproj/xcuserdata;
+			sourceTree = "<group>";
+		};
+		57975F3C51683ABE14191024 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = xcschemes;
+			sourceTree = "<group>";
+		};
 		6278498AD96A4D949D39BF44 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +182,7 @@
 				F1465EFE23AA94BF0055F7C3 /* Products */,
 				DF9BBECBCD175B90105DA8D9 /* Pods */,
 				6278498AD96A4D949D39BF44 /* Frameworks */,
+				5797556592C6669DF1E7702C /* xcuserdata */,
 			);
 			sourceTree = "<group>";
 		};

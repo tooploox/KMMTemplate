@@ -12,35 +12,33 @@ import shared
 import KMPNativeCoroutinesCombine
 
 class BreedDetailsViewModel: ObservableObject {
-    private var viewModelDelegate: BreedDetailsViewModelDelegate
 
+    @Published var state: BreedDetailsViewState = BreedDetailsViewState.companion.default()
+
+    private var viewModelDelegate: BreedDetailsViewModelDelegate
+    private var cancellables = [AnyCancellable]()
     init(breedId: Int64) {
         self.viewModelDelegate = KotlinDependencies.shared.getBreedDetailsViewModel(breedId: breedId)
     }
 
-    @Published
-    var detailsState: BreedDetailsViewState = BreedDetailsViewState.companion.default()
-
-    private var cancellables = [AnyCancellable]()
-
-    func onFavoriteClick() {
-        viewModelDelegate.onFavoriteClick()
+    deinit {
+        viewModelDelegate.clear()
     }
-    
-    func activate() {
+
+    func subscribeState() {
         createPublisher(for: viewModelDelegate.detailsStateFlow)
             .sink { _ in } receiveValue: { [weak self] (detailsState: BreedDetailsViewState) in
-                self?.detailsState = detailsState
+                self?.state = detailsState
             }
             .store(in: &cancellables)
     }
 
-    func deactivate() {
+    func unsubscribeState() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
     }
 
-    deinit {
-        viewModelDelegate.clear()
+    func onFavoriteClick() {
+        viewModelDelegate.onFavoriteClick()
     }
 }
