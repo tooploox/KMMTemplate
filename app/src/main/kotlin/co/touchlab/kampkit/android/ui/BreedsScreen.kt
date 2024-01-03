@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,7 +100,7 @@ fun BreedsScreenContent(
 }
 
 @Composable
-fun Empty() {
+private fun Empty() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +113,7 @@ fun Empty() {
 }
 
 @Composable
-fun Error(error: String) {
+private fun Error(error: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -120,12 +121,12 @@ fun Error(error: String) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = error)
+        Text(text = error, color = Color.Red)
     }
 }
 
 @Composable
-fun Success(
+private fun Success(
     successData: List<Breed>,
     onBreedClick: (breedId: Long) -> Unit
 ) {
@@ -158,15 +159,15 @@ fun DogRow(breed: Breed, onClick: (Breed) -> Unit) {
 
 @Composable
 fun FavoriteIcon(breed: Breed) {
-    if (!breed.favorite) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_favorite_border_24px),
-            contentDescription = stringResource(R.string.favorite_breed, breed.name)
-        )
-    } else {
+    if (breed.favorite) {
         Image(
             painter = painterResource(id = R.drawable.ic_favorite_24px),
             contentDescription = stringResource(R.string.unfavorite_breed, breed.name)
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_favorite_border_24px),
+            contentDescription = stringResource(R.string.favorite_breed, breed.name)
         )
     }
 }

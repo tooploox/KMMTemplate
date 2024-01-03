@@ -93,6 +93,7 @@
 				46EB2E00000080 /* Pods */,
 				46EB2E00000020 /* Products */,
 				46EB2E00000070 /* Targets Support Files */,
+				57975FCC640FD6F802D419B1 /* xcschemes */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,6 +216,14 @@
 			);
 			name = "Pods-KaMPKitiOS";
 			path = "Target Support Files/Pods-KaMPKitiOS";
+			sourceTree = "<group>";
+		};
+		57975FCC640FD6F802D419B1 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = Pods.xcodeproj/xcuserdata/bartlomiejpedryc.xcuserdatad/xcschemes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
