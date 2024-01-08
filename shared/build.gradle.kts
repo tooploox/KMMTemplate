@@ -6,8 +6,8 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("com.squareup.sqldelight")
-    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
-    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-9"
+    id("com.google.devtools.ksp") version "1.9.21-1.0.16"
+    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-23"
 }
 
 android {
@@ -22,6 +22,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
     lint {
         warningsAsErrors = true
         abortOnError = true
@@ -32,9 +37,9 @@ android {
 version = "1.2"
 
 kotlin {
-    android()
-    ios()
-    // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
+    androidTarget()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
 
     sourceSets {
@@ -47,7 +52,7 @@ kotlin {
             }
         }
 
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.koin.core)
                 implementation(libs.coroutines.core)
@@ -59,12 +64,12 @@ kotlin {
                 api(libs.touchlab.kermit)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(libs.bundles.shared.commonTest)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.sqlDelight.android)
@@ -76,18 +81,11 @@ kotlin {
                 implementation(libs.bundles.shared.androidTest)
             }
         }
-        val iosMain by getting {
+        iosMain {
             dependencies {
                 implementation(libs.sqlDelight.native)
                 implementation(libs.ktor.client.ios)
             }
-        }
-        val iosTest by getting
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
         }
     }
 

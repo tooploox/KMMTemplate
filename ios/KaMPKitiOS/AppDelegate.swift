@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navController
         self.window?.makeKeyAndVisible()
 
-        log.v(message: {"App Started"})
+        log.v(throwable: nil, tag: "AppDelegate", message: {"App Started"})
         return true
     }
 }
