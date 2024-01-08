@@ -76,6 +76,7 @@ private val coreModule = module {
             get()
         )
     }
+    factory<DateHandler> { KoinPlatformConfiguration.provideDateHandler() }
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {

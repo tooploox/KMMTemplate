@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C35C8A92B4862E90063100B /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 3C35C8A82B4862E90063100B /* SwiftDate */; };
 		3C61D1352A55909300D4DF1D /* BreedDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C61D1342A55909300D4DF1D /* BreedDetailsViewModel.swift */; };
 		3C6AEC072A30881B0003F34A /* BreedDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEC062A30881B0003F34A /* BreedDetailsScreen.swift */; };
 		3C6AEC092A30C17A0003F34A /* MainNavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEC082A30C17A0003F34A /* MainNavCoordinator.swift */; };
 		3C73D04A2A335103003E6929 /* BreedsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C73D0492A335103003E6929 /* BreedsViewModel.swift */; };
 		3CD290EC2A251417004C7AD1 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = 3CD290EB2A251417004C7AD1 /* KMPNativeCoroutinesCombine */; };
 		3CD290EE2A251417004C7AD1 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3CD290ED2A251417004C7AD1 /* KMPNativeCoroutinesCore */; };
+		3CEAE5212B48674800EFA924 /* IosDateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CEAE5202B48674800EFA924 /* IosDateHandler.swift */; };
 		3DFF917C64A18A83DA010EE1 /* Pods_KaMPKitiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B859F3FB23133D22AB9DD835 /* Pods_KaMPKitiOS.framework */; };
 		46A5B5EF26AF54F7002EFEAA /* BreedsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A5B5EE26AF54F7002EFEAA /* BreedsScreen.swift */; };
 		46A5B60826B04921002EFEAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46A5B60626B04920002EFEAA /* Main.storyboard */; };
@@ -48,6 +50,7 @@
 		3C6AEC062A30881B0003F34A /* BreedDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailsScreen.swift; sourceTree = "<group>"; };
 		3C6AEC082A30C17A0003F34A /* MainNavCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavCoordinator.swift; sourceTree = "<group>"; };
 		3C73D0492A335103003E6929 /* BreedsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsViewModel.swift; sourceTree = "<group>"; };
+		3CEAE5202B48674800EFA924 /* IosDateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IosDateHandler.swift; sourceTree = "<group>"; };
 		46A5B5EE26AF54F7002EFEAA /* BreedsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BreedsScreen.swift; path = KaMPKitiOS/BreedsScreen.swift; sourceTree = SOURCE_ROOT; };
 		46A5B60726B04920002EFEAA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		46B5284C249C5CF400A7725D /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C35C8A92B4862E90063100B /* SwiftDate in Frameworks */,
 				3DFF917C64A18A83DA010EE1 /* Pods_KaMPKitiOS.framework in Frameworks */,
 				3CD290EC2A251417004C7AD1 /* KMPNativeCoroutinesCombine in Frameworks */,
 				3CD290EE2A251417004C7AD1 /* KMPNativeCoroutinesCore in Frameworks */,
@@ -191,6 +195,7 @@
 				F1465F0B23AA94BF0055F7C3 /* LaunchScreen.storyboard */,
 				F1465F0E23AA94BF0055F7C3 /* Info.plist */,
 				3C6AEC082A30C17A0003F34A /* MainNavCoordinator.swift */,
+				3CEAE5202B48674800EFA924 /* IosDateHandler.swift */,
 			);
 			path = KaMPKitiOS;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 			packageProductDependencies = (
 				3CD290EB2A251417004C7AD1 /* KMPNativeCoroutinesCombine */,
 				3CD290ED2A251417004C7AD1 /* KMPNativeCoroutinesCore */,
+				3C35C8A82B4862E90063100B /* SwiftDate */,
 			);
 			productName = KaMPKitiOS;
 			productReference = F1465EFD23AA94BF0055F7C3 /* KaMPKitiOS.app */;
@@ -310,6 +316,7 @@
 			mainGroup = F1465EF423AA94BF0055F7C3;
 			packageReferences = (
 				3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
+				3C35C8A72B4862E90063100B /* XCRemoteSwiftPackageReference "SwiftDate" */,
 			);
 			productRefGroup = F1465EFE23AA94BF0055F7C3 /* Products */;
 			projectDirPath = "";
@@ -416,6 +423,7 @@
 			files = (
 				46B5284D249C5CF400A7725D /* Koin.swift in Sources */,
 				3C73D04A2A335103003E6929 /* BreedsViewModel.swift in Sources */,
+				3CEAE5212B48674800EFA924 /* IosDateHandler.swift in Sources */,
 				3C61D1352A55909300D4DF1D /* BreedDetailsViewModel.swift in Sources */,
 				46A5B5EF26AF54F7002EFEAA /* BreedsScreen.swift in Sources */,
 				46A5B5EF26AF54F7002EFEAA /* BreedsScreen.swift in Sources */,
@@ -778,6 +786,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3C35C8A72B4862E90063100B /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines.git";
@@ -789,6 +805,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3C35C8A82B4862E90063100B /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C35C8A72B4862E90063100B /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
+		};
 		3CD290EB2A251417004C7AD1 /* KMPNativeCoroutinesCombine */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3CD290EA2A251417004C7AD1 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;

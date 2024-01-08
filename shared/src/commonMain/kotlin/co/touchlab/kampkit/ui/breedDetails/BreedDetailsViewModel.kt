@@ -1,5 +1,6 @@
 package co.touchlab.kampkit.ui.breedDetails
 
+import co.touchlab.kampkit.core.DateHandler
 import co.touchlab.kampkit.core.ViewModel
 import co.touchlab.kampkit.domain.breed.BreedRepository
 import co.touchlab.kermit.Logger
@@ -14,6 +15,7 @@ import kotlin.native.ObjCName
 class BreedDetailsViewModel(
     private val breedId: Long,
     private val breedRepository: BreedRepository,
+    private val dateHandler: DateHandler,
     log: Logger
 ) : ViewModel() {
     private val log = log.withTag("BreedDetailsViewModel")
@@ -44,8 +46,8 @@ class BreedDetailsViewModel(
     }
 
     fun onFavoriteClick() {
-        viewModelScope.launch {
-            breedRepository.updateBreedFavorite(breedId)
+        mutableDetailsState.update {
+            it.copy(breed = it.breed?.copy(name = dateHandler.getCurrentDate()))
         }
     }
 }

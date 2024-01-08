@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import co.touchlab.kampkit.core.AndroidDateHandler
 import co.touchlab.kampkit.core.AppInfo
+import co.touchlab.kampkit.core.KoinPlatformConfiguration
 import co.touchlab.kampkit.core.initKoin
 import co.touchlab.kampkit.ui.breedDetails.BreedDetailsViewModel
 import co.touchlab.kampkit.ui.breeds.BreedsViewModel
@@ -16,6 +18,9 @@ class MainApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        KoinPlatformConfiguration.init(
+            dateHandler = AndroidDateHandler()
+        )
         initKoin(
             module {
                 single<Context> { this@MainApp }
@@ -24,7 +29,7 @@ class MainApp : Application() {
                 }
                 viewModel { params ->
                     BreedDetailsViewModel(
-                        params.get(), get(), get { parametersOf("BreedDetailsViewModel") }
+                        params.get(), get(), get(), get { parametersOf("BreedDetailsViewModel") }
                     )
                 }
                 single<SharedPreferences> {

@@ -15,6 +15,7 @@ func startKoin() {
     // dependencies in a larger scale project where declaring them in
     // Kotlin is more difficult, or where they're also used in
     // iOS-specific code.
+    PlatformProvider.shared.configure(dateHandler: IosDateHandler())
 
     let userDefaults = UserDefaults(suiteName: "KAMPSTARTER_SETTINGS")!
     let iosAppInfo = IosAppInfo()

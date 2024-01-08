@@ -35,7 +35,7 @@ actual val platformModule = module {
 
     factory { BreedsViewModel(get(), getWith("BreedsViewModel")) }
 
-    factory { params -> BreedDetailsViewModel(params.get(), get(), getWith("BreedDetailsViewModel")) }
+    factory { params -> BreedDetailsViewModel(params.get(), get(), get(), getWith("BreedDetailsViewModel")) }
 }
 
 // Access from Swift to create a logger
